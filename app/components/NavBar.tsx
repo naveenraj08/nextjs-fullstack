@@ -8,11 +8,9 @@ import {
   MenuItems,
 } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/16/solid";
-import { BellIcon, UserIcon } from "@heroicons/react/24/outline";
-import { redirect } from "next/dist/server/api-utils";
+import { BellIcon, PowerIcon } from "@heroicons/react/24/outline";
 
 import Image from "next/image";
-import Link from "next/link";
 import React from "react";
 
 export const NavBar = async () => {
@@ -49,76 +47,60 @@ export const NavBar = async () => {
               />
             </div>
           </div>
-          <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+          <div className="absolute inset-y-0 right-0 flex items-center space-x-4 pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             <button
               type="button"
               className="relative rounded-full p-2 text-gray-600 focus:outline-none hover:bg-gray-100 focus:bg-gray-100 focus:ring-2 focus:ring-gray-400"
             >
-              <span className="absolute -inset-1.5" />
               <span className="sr-only">View notifications</span>
               <BellIcon aria-hidden="true" className="size-6" />
             </button>
 
-            {/* Profile dropdown */}
-            <Menu as="div" className="relative ml-3">
-              <div>
-                <MenuButton className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                  <span className="absolute -inset-1.5" />
-                  <span className="sr-only">Open user menu</span>
-                  <img
-                    alt=""
-                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                    className="size-8 rounded-full"
-                  />
-                </MenuButton>
-              </div>
-              <MenuItems
-                transition
-                className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
-              >
-                {session && session?.user ? (
-                  <>
-                    <MenuItem>
-                      <Link href={`/user/${session?.id}`}  className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:outline-none">
-                        {session?.user?.name}
-                      </Link>
-                    </MenuItem>
-
-                    <MenuItem>
-                      <Link
-                        href="/startup/create"
-                        className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:outline-none"
-                      >
-                        <span>Create</span>
-                      </Link>
-                    </MenuItem>
-                    <MenuItem>
-                      <form
-                       className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:outline-none"
-                        action={async () => {
-                          "use server";
-                          await signOut({ options: { redirectTo: "/" } });
-                        }}
-                      >
-                        <button type="submit">Logout</button>
-                      </form>
-                    </MenuItem>
-                  </>
-                ) : (
-                  <MenuItem>
-                    <form
-                     className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:outline-none"
-                      action={async () => {
-                        "use server";
-                        await signIn({ provider: "github" });
-                      }}
+            <div>
+              {session?.user ? (
+                <form
+                  
+                  action={async () => {
+                    "use server";
+                    await signOut({ options: { redirectTo: "/" } });
+                  }}
+                >
+                  <button type="submit" className="relative rounded-full p-2 text-gray-600 focus:outline-none hover:bg-gray-100 focus:bg-gray-100 focus:ring-2 focus:ring-gray-400" title="Log out">
+                    <span className="sr-only">Log out</span>
+                    <PowerIcon className="size-6" />
+                  </button>
+                </form>
+              ) : (
+                <form
+                  action={async () => {
+                    "use server";
+                    await signIn({ provider: "github" });
+                  }}
+                >
+                  <button
+                    type="submit"
+                    className="relative rounded-full p-2 text-gray-600 focus:outline-none hover:bg-gray-100 focus:bg-gray-100 focus:ring-2 focus:ring-gray-400"
+                    title="Login with Github"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      version="1.1"
+                      xmlnsXlink="http://www.w3.org/1999/xlink"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
                     >
-                      <button type="submit">Login</button>
-                    </form>
-                  </MenuItem>
-                )}
-              </MenuItems>
-            </Menu>
+                      <g>
+                        <path
+                          d="M12 .5C5.37.5 0 5.78 0 12.292c0 5.211 3.438 9.63 8.205 11.188.6.111.82-.254.82-.567 0-.28-.01-1.022-.015-2.005-3.338.711-4.042-1.582-4.042-1.582-.546-1.361-1.335-1.725-1.335-1.725-1.087-.731.084-.716.084-.716 1.205.082 1.838 1.215 1.838 1.215 1.07 1.803 2.809 1.282 3.495.981.108-.763.417-1.282.76-1.577-2.665-.295-5.466-1.309-5.466-5.827 0-1.287.465-2.339 1.235-3.164-.135-.298-.54-1.497.105-3.121 0 0 1.005-.316 3.3 1.209.96-.262 1.98-.392 3-.398 1.02.006 2.04.136 3 .398 2.28-1.525 3.285-1.209 3.285-1.209.645 1.624.24 2.823.12 3.121.765.825 1.23 1.877 1.23 3.164 0 4.53-2.805 5.527-5.475 5.817.42.354.81 1.077.81 2.182 0 1.578-.015 2.846-.015 3.229 0 .309.21.678.825.56C20.565 21.917 24 17.495 24 12.292 24 5.78 18.627.5 12 .5z"
+                          fill="#000000"
+                        ></path>
+                      </g>
+                    </svg>
+                  </button>
+                </form>
+              )}
+            </div>
           </div>
         </div>
       </div>
