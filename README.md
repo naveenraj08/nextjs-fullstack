@@ -4,7 +4,7 @@ A basic blog app to explore basic next.js concepts, with CRUD operations.
 
 ### Features of the application
 
-* Login/Sign up authentication
+* OAuth
 * Search blog
 * Blog list
 * Blog details
