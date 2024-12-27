@@ -4,10 +4,12 @@ A basic blog app to explore basic next.js concepts, with CRUD operations.
 
 ### Features of the application
 
-* OAuth
-* Search blog
-* Blog list
-* Blog details
-* Blog creation form
-* User profile
-
+* OAuth Authentication
+* Search Posts
+* Blog Post Listing
+* Blog Post Details
+* Blog Post Form
+* User Profile Management
+* User Comments
+* Responsive Design
+* Dark Mode
