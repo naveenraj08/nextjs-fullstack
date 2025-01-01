@@ -12,6 +12,12 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      boxShadow: {
+        'post-card': '2px 4px 12px rgba(0, 0, 0, 0.0784)'
+      },
+      borderRadius: {
+        'post-card': '18px'
+      },
     },
   },
   plugins: [],
