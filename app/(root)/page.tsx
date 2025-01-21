@@ -15,9 +15,10 @@ export default async function Home({
       views: 55,
       author: {
         _id: 1,
+        name: 'Naveen Raj'
       },
       _id: 1,
-      description: "This is the descriptions...",
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum. Curabitur nec purus et lorem viverra tincidunt. Aliquam erat volutpat. In hac habitasse platea dictumst. Etiam malesuada augue eget lorem varius, sed pharetra arcu hendrerit. Proin ac tristique ligula. Morbi tincidunt libero sed erat varius, id faucibus ipsum lobortis.",
       image:
         "https://images.pexels.com/photos/261662/pexels-photo-261662.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
       category: "Robots",
