@@ -1,6 +1,6 @@
 ## Next JS + TailwindCSS + shadcn/ui
 
-A basic blog app to explore basic next.js concepts, with CRUD operations.
+A basic blog app to explore next.js concepts, with CRUD operations.
 
 ### Features of the application
 
