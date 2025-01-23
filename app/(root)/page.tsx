@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { SearchForm } from "../components/SearchForm";
 import { Post } from "../components/Post";
+import { client } from "@/sanity/lib/client";
+import { STARTUP_QUERY } from "@/sanity/lib/queries";
 
 export default async function Home({
   searchParams,
@@ -9,22 +11,7 @@ export default async function Home({
 }) {
   const query = (await searchParams).query;
 
-  const posts = [
-    {
-      _createdAt: new Date(),
-      views: 55,
-      author: {
-        _id: 1,
-        name: 'Naveen Raj'
-      },
-      _id: 1,
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum. Curabitur nec purus et lorem viverra tincidunt. Aliquam erat volutpat. In hac habitasse platea dictumst. Etiam malesuada augue eget lorem varius, sed pharetra arcu hendrerit. Proin ac tristique ligula. Morbi tincidunt libero sed erat varius, id faucibus ipsum lobortis.",
-      image:
-        "https://images.pexels.com/photos/261662/pexels-photo-261662.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-      category: "Robots",
-      title: "We Robots",
-    },
-  ];
+  const posts = await client.fetch(STARTUP_QUERY);
 
   return (
     <div className="divide-y divide-gray-100">
