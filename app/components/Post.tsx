@@ -16,16 +16,15 @@ export const Post = ({ post }: { post: StartupTypeCard }) => {
   } = post;
 
   return (
-    <li>
-      <div className="w-full p-4 bg-white space-y-5 border border-gray-100 rounded-post-card shadow-post-card duration-300 ease-in-out group">
-        <div className="w-full rounded-md  overflow-hidden block">
-          <Link href={`/post/${_id}`} className="block">
+    <li className="w-full p-4 bg-white flex flex-col items-start justify-start space-y-5 border border-gray-100 rounded-post-card shadow-post-card duration-300 ease-in-out group">
+        <div className="w-full rounded-xl overflow-hidden block">
+          <Link href={`/startup/${_id}`} className="block ">
             <Image
               src={image}
               alt={title}
-              className="w-full transition-all duration-300 ease-in-out group-hover:scale-105"
-              width="540"
-              height="540"
+              className="w-full transition-all duration-300 ease-in-out group-hover:scale-105 min-h-[230px] object-cover"
+              width="360"
+              height="230"
             />
           </Link>
         </div>
@@ -40,24 +39,23 @@ export const Post = ({ post }: { post: StartupTypeCard }) => {
 
         <div>
           <h2 className="text-xl text-left font-semibold">
-            <Link href={`/details/${_id}`} className="text-xl font-semibold">
+            <Link href={`/startup/${_id}`} className="text-xl font-semibold">
               {title}
             </Link>
           </h2>
           <p className="text-sm text-gray-600 text-left mt-2 line-clamp-2">{description}</p>
         </div>
 
-        <div className="text-left pt-5">
+        <div className="text-left pt-5 flex-1 flex items-end">
           <Link
             href={`user/${authorId}`} title={name}
-            className="text-sm text-gray-600 inline-flex items-center gap-2"
+            className="text-sm text-gray-600 inline-flex items-center"
           >
             <span className="w-10 h-10 flex justify-center items-center rounded-full bg-gray-200 font-medium text-gray-800">
               {formateName(name)}
             </span>
           </Link>
         </div>
-      </div>
     </li>
   );
 };

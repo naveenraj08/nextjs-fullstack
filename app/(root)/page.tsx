@@ -45,9 +45,9 @@ export default async function Home({
             {query ? `"Search results for ${query}"` : "Recommended Post"}
           </p>
 
-          <ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
+          <ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
             {posts.length > 0 ? (
-              posts.map((post) => <Post post={post} key={post?._id} />)
+              posts.map((post: unknown) => <Post post={post} key={post?._id} />)
             ) : (
               <li className="col-span-1 md:col-span-2 xl:col-span-3 text-lg font-medium">
                 Sorry! No posts found...
