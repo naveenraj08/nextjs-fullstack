@@ -1,16 +1,10 @@
 import { auth, signIn, signOut } from "@/auth";
-import {
-  Disclosure,
-  DisclosureButton,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuItems,
-} from "@headlessui/react";
+import { Disclosure, DisclosureButton } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/16/solid";
 import { BellIcon, PowerIcon } from "@heroicons/react/24/outline";
 
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 export const NavBar = async () => {
@@ -37,14 +31,16 @@ export const NavBar = async () => {
           </div>
           <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
             <div className="flex shrink-0 items-center">
-              <Image
-                className="dark:invert"
-                src="/next.svg"
-                alt="Next.js logo"
-                width={120}
-                height={30}
-                priority
-              />
+              <Link href={"/"}>
+                <Image
+                  className="dark:invert"
+                  src="/next.svg"
+                  alt="Next.js logo"
+                  width={120}
+                  height={30}
+                  priority
+                />
+              </Link>
             </div>
           </div>
           <div className="absolute inset-y-0 right-0 flex items-center space-x-4 pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
@@ -59,13 +55,16 @@ export const NavBar = async () => {
             <div>
               {session?.user ? (
                 <form
-                  
                   action={async () => {
                     "use server";
                     await signOut({ options: { redirectTo: "/" } });
                   }}
                 >
-                  <button type="submit" className="relative rounded-full p-2 text-gray-600 focus:outline-none hover:bg-gray-100 focus:bg-gray-100 focus:ring-2 focus:ring-gray-400" title="Log out">
+                  <button
+                    type="submit"
+                    className="relative rounded-full p-2 text-gray-600 focus:outline-none hover:bg-gray-100 focus:bg-gray-100 focus:ring-2 focus:ring-gray-400"
+                    title="Log out"
+                  >
                     <span className="sr-only">Log out</span>
                     <PowerIcon className="size-6" />
                   </button>

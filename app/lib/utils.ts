@@ -8,9 +8,11 @@ export function formateDate(date:string) {
 }
 
 // Convert name into two letter
-export function formateName(name:string){
+export function formateName(name: string): string {
+    if (!name) return "N/A";
+
     const words = name.split(" ");
     const firstLetters = words.slice(0, 2).map(word => word.charAt(0).toUpperCase());
 
-    return firstLetters;
+    return firstLetters.join("");
 }

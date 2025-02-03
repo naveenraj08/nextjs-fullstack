@@ -2,6 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { formateDate, formateName } from "../lib/utils";
 import { EyeIcon } from "@heroicons/react/24/outline";
+import { Author, Startup } from "@/sanity/types";
+
+export type StartupTypeCard = Omit<Startup, "author"> & { author?: Author };
 
 export const Post = ({ post }: { post: StartupTypeCard }) => {
   const {
@@ -9,10 +12,9 @@ export const Post = ({ post }: { post: StartupTypeCard }) => {
     title,
     _createdAt,
     views,
-    author: { _id: authorId, name },
+    author,
     _id,
     description,
-    category,
   } = post;
 
   return (
@@ -48,11 +50,11 @@ export const Post = ({ post }: { post: StartupTypeCard }) => {
 
         <div className="text-left pt-5 flex-1 flex items-end">
           <Link
-            href={`user/${authorId}`} title={name}
+            href={`/user/${author?._id}`} title={author?.name}
             className="text-sm text-gray-600 inline-flex items-center"
           >
             <span className="w-10 h-10 flex justify-center items-center rounded-full bg-gray-200 font-medium text-gray-800">
-              {formateName(name)}
+              {formateName(author?.name ?? '')}
             </span>
           </Link>
         </div>
