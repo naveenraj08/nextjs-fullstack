@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { SearchForm } from "../components/SearchForm";
-import { Post, StartupTypeCard } from "../components/Post";
+import { SearchForm } from "@/app/components/SearchForm";
+import { Post, StartupTypeCard } from "../../components/Post";
 import { STARTUP_QUERY } from "@/sanity/lib/queries";
 import { sanityFetch, SanityLive } from "@/sanity/lib/live";
 
@@ -10,7 +10,7 @@ export default async function Home({
   searchParams: Promise<{ query?: string }>;
 }) {
   const query = (await searchParams).query;
-  const { data:posts } = await sanityFetch({ query: STARTUP_QUERY })
+  const { data: posts } = await sanityFetch({ query: STARTUP_QUERY });
 
   return (
     <div className="divide-y divide-gray-100">
@@ -46,7 +46,9 @@ export default async function Home({
 
           <ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
             {posts.length > 0 ? (
-              posts.map((post: StartupTypeCard) => <Post post={post} key={post?._id} />)
+              posts.map((post: StartupTypeCard) => (
+                <Post post={post} key={post?._id} />
+              ))
             ) : (
               <li className="col-span-1 md:col-span-2 xl:col-span-3 text-lg font-medium">
                 Sorry! No posts found...

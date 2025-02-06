@@ -11,12 +11,13 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        body: "#F6F6F6",
       },
       boxShadow: {
-        'post-card': '2px 4px 12px rgba(0, 0, 0, 0.0784)'
+        "post-card": "2px 4px 12px rgba(0, 0, 0, 0.0784)",
       },
       borderRadius: {
-        'post-card': '18px'
+        "post-card": "18px",
       },
     },
   },
