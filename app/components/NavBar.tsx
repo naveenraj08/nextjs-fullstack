@@ -57,7 +57,7 @@ export const NavBar = async () => {
                 <form
                   action={async () => {
                     "use server";
-                    await signOut({ options: { redirectTo: "/" } });
+                    await signOut({ redirectTo: "/" });
                   }}
                 >
                   <button
@@ -73,7 +73,7 @@ export const NavBar = async () => {
                 <form
                   action={async () => {
                     "use server";
-                    await signIn({ provider: "github" });
+                    await signIn("github");
                   }}
                 >
                   <button

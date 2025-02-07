@@ -12,9 +12,10 @@ const nextConfig: NextConfig = {
     ],
   },
 
-  experimental: {
-    ppr: "incremental",
-  },
+  // This needs to support next 15
+  // experimental: {
+  //   ppr: "incremental",
+  // },
   devIndicators: {
     appIsrStatus: true,
     buildActivity: true,
