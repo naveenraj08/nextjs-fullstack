@@ -44,6 +44,13 @@ export const NavBar = async () => {
             </div>
           </div>
           <div className="absolute inset-y-0 right-0 flex items-center space-x-4 pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+            <Link
+              href={"/startup/create"}
+              className="relative rounded-lg bg-blue-500 text-white px-5 py-2 text-sm font-medium focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
+              Create Post
+            </Link>
+
             <button
               type="button"
               className="relative rounded-full p-2 text-gray-600 focus:outline-none hover:bg-gray-100 focus:bg-gray-100 focus:ring-2 focus:ring-gray-400"
