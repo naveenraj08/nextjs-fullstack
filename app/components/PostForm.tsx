@@ -5,29 +5,50 @@ import { Textarea } from "@/components/ui/textarea";
 import React, { useActionState, useState } from "react";
 import MDEditor from "@uiw/react-md-editor";
 import { formSchema } from "../lib/validation";
+import { Send } from "lucide-react";
+import { z } from "zod";
+import { createPitch } from "../lib/actions";
+import { useRouter } from "next/navigation";
 
 export const PostForm = () => {
-  const [pitch, setPitch] = useState("**Hello world!!!**");
-  const [errors, seterrors] = useState({});
+  const [pitch, setPitch] = useState("");
+  const [errors, setErrors] = useState({});
+
+  const router = useRouter();
 
   const handleFormSubmit = async (prevState: any, formData: FormData) => {
     try {
       const formValues = {
-        title: formData.get("title") as string,
-        description: formData.get("description") as string,
-        category: formData.get("category") as string,
-        link: formData.get("link") as string,
+        title: formData.get("post-title") as string,
+        description: formData.get("post-description") as string,
+        category: formData.get("post-category") as string,
+        link: formData.get("post-image") as string,
         pitch,
       };
 
       await formSchema.parseAsync(formValues);
 
-      console.log(formValues);
+      const result = await createPitch(prevState, formData, pitch);
+
+      console.log(result);
+
+      if (result.status === "SUCCESS") {
+        router.push(`/startup/${result._id}`);
+      }
     } catch (error) {
-      console.error(error);
-    } finally {
+      if (error instanceof z.ZodError) {
+        const fieldErrors = error.flatten().fieldErrors;
+        setErrors(fieldErrors as unknown as Record<string, string>);
+        return { ...prevState, error: "Validation failed", status: "ERROR" };
+      }
+
+      return {
+        ...prevState,
+        error: "An Unexpected error has occurred",
+      };
     }
   };
+
   const [state, formAction, isPending] = useActionState(handleFormSubmit, {
     error: "",
     status: "INITIAL",
@@ -35,7 +56,7 @@ export const PostForm = () => {
 
   return (
     <form
-      action={() => {}}
+      action={formAction}
       className="post-form space-y-5 mx-auto max-w-xl px-2 sm:px-6 py-5 lg:px-8 bg-white rounded-md border border-gray-100"
     >
       <h1 className="my-5 text-center text-xl font-semibold text-gray-900">
@@ -49,12 +70,15 @@ export const PostForm = () => {
           Title
         </label>
         <Input
+          name="post-title"
           title="Startup Title"
-          className="mt-2 text-sm text-gray-800"
+          className="input-text block w-full mt-2 rounded-md border-0 h-11 px-4 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
           id="title"
         />
         {errors?.title && (
-          <p className="mt-2 text-red-500 text-sm">{errors?.title}</p>
+          <p className="mt-2 text-red-600 inline-block bg-red-50 px-4 py-1 rounded-md text-xs">
+            {errors?.title}
+          </p>
         )}
       </div>
       <div>
@@ -65,13 +89,16 @@ export const PostForm = () => {
           Description
         </label>
         <Textarea
+          name="post-description"
           title="Startup Description"
-          className="mt-2 text-sm text-gray-800"
+          className="input-text block w-full mt-2 rounded-md border-0  h-11 px-4 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
           id="description"
         />
 
         {errors?.description && (
-          <p className="mt-2 text-red-500 text-sm">{errors?.description}</p>
+          <p className="mt-2 text-red-600 inline-block bg-red-50 px-4 py-1 rounded-md text-xs">
+            {errors?.description}
+          </p>
         )}
       </div>
 
@@ -84,13 +111,16 @@ export const PostForm = () => {
           Category
         </label>
         <Input
+          name="post-category"
           title="Category"
-          className="mt-2 text-sm text-gray-800"
+          className="input-text block w-full mt-2 rounded-md border-0  h-11 px-4 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
           id="category"
         />
 
         {errors?.category && (
-          <p className="mt-2 text-red-500 text-sm">{errors?.category}</p>
+          <p className="mt-2 text-red-600 inline-block bg-red-50 px-4 py-1 rounded-md text-xs">
+            {errors?.category}
+          </p>
         )}
       </div>
 
@@ -102,30 +132,41 @@ export const PostForm = () => {
         >
           Image URL
         </label>
-        <Input title="Link" className="mt-2 text-sm text-gray-800" id="link" />
+        <Input
+          title="Link"
+          name="post-image"
+          className="input-text block w-full mt-2 rounded-md border-0  h-11 px-4 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
+          id="link"
+        />
 
-        {errors?.image && (
-          <p className="mt-2 text-red-500 text-sm">{errors?.image}</p>
+        {errors?.link && (
+          <p className="mt-2 text-red-600 inline-block bg-red-50 px-4 py-1 rounded-md text-xs">
+            {errors?.link}
+          </p>
         )}
       </div>
 
       {}
       <div>
         <label
-          htmlFor="title"
+          htmlFor="message"
           className="post-form-title font-medium text-xs text-gray-500"
         >
-          Title
+          Message
         </label>
         <MDEditor
           value={pitch}
           height="200px"
           preview="edit"
+          className="mt-2"
+          id="message"
           onChange={(value) => setPitch(value ?? "")}
         />
 
         {errors?.pitch && (
-          <p className="mt-2 text-red-500 text-sm">{errors?.pitch}</p>
+          <p className="mt-2 text-red-600 inline-block bg-red-50 px-4 py-1 rounded-md text-xs">
+            {errors?.pitch}
+          </p>
         )}
       </div>
 
@@ -134,9 +175,20 @@ export const PostForm = () => {
       <div className="text-center py-5">
         <button
           type="submit"
-          className="relative rounded-lg bg-black text-white px-5 py-2 text-sm font-medium focus:ring-2 focus:ring-offset-2 focus:ring-black"
+          disabled={isPending}
+          className="relative rounded-lg bg-black text-white h-11 px-10 py-2 text-sm font-medium focus:ring-2 focus:ring-offset-2 focus:ring-black"
         >
-          Create
+          <span
+            className={`inline-flex items-center transition duration-200 ${isPending ? "opacity-0" : "opacity-100"}`}
+          >
+            Create
+            <Send className="size-4 ml-2" />
+          </span>
+          <span
+            className={`absolute flex justify-center items-center top-0 left-0 w-full h-full transition duration-200 ${isPending ? "opacity-100 z-10" : "opacity-0 -z-10"}`}
+          >
+            <span className="w-6 h-6 inline-block border-2 border-white border-r-transparent rounded-full animate-spin"></span>
+          </span>
         </button>
       </div>
     </form>

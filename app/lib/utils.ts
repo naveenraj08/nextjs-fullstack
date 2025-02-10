@@ -21,3 +21,8 @@ export function formateName(name: string): string {
 
     return firstLetters.join("");
 }
+
+
+export function parseServerActionResponse<T>(response: T) {
+    return JSON.parse(JSON.stringify(response))
+}
