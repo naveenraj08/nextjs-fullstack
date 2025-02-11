@@ -1,10 +1,10 @@
 import { z } from "zod";
 
 export const formSchema = z.object({
-  title: z.string().min(3).max(100),
-  description: z.string().min(20).max(500),
-  category: z.string().min(3).max(20),
-  link: z
+  title: z.string().min(3, "Title is too short").max(100),
+  description: z.string().min(10, "Description is too short").max(500),
+  category: z.string().min(3, "Category is required").max(20),
+  image: z
     .string()
     .url()
     .refine(async (url) => {
@@ -16,5 +16,5 @@ export const formSchema = z.object({
         return false;
       }
     }),
-  pitch: z.string().min(10),
+  pitch: z.string().min(10, "Pitch must have at least 10 characters"),
 });

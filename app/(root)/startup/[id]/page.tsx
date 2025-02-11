@@ -17,7 +17,9 @@ interface PageProps {
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
-  const post = await client.fetch(STARTUP_QUERY_BY_ID, { id: params.id });
+  const { id } = await params;
+
+  const post = await client.fetch(STARTUP_QUERY_BY_ID, { id });
 
   if (!post)
     return { title: "Not Found", description: "This page does not exist" };
@@ -43,7 +45,6 @@ export async function generateMetadata({
 
 const Page = async ({ params }: { params: { id: string } }) => {
   const { id } = await params;
-
   const post = await client.fetch(STARTUP_QUERY_BY_ID, { id });
 
   const md = MarkdownIt();

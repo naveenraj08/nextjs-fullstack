@@ -19,10 +19,10 @@ export const PostForm = () => {
   const handleFormSubmit = async (prevState: any, formData: FormData) => {
     try {
       const formValues = {
-        title: formData.get("post-title") as string,
-        description: formData.get("post-description") as string,
-        category: formData.get("post-category") as string,
-        link: formData.get("post-image") as string,
+        title: formData.get("title") as string,
+        description: formData.get("description") as string,
+        category: formData.get("category") as string,
+        image: formData.get("image") as string,
         pitch,
       };
 
@@ -30,12 +30,11 @@ export const PostForm = () => {
 
       const result = await createPitch(prevState, formData, pitch);
 
-      console.log(result);
-
       if (result.status === "SUCCESS") {
         router.push(`/startup/${result._id}`);
       }
     } catch (error) {
+      console.log(error);
       if (error instanceof z.ZodError) {
         const fieldErrors = error.flatten().fieldErrors;
         setErrors(fieldErrors as unknown as Record<string, string>);
@@ -70,14 +69,14 @@ export const PostForm = () => {
           Title
         </label>
         <Input
-          name="post-title"
+          name="title"
           title="Startup Title"
           className="input-text block w-full mt-2 rounded-md border-0 h-11 px-4 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
           id="title"
         />
-        {errors?.title && (
+        {errors.title && (
           <p className="mt-2 text-red-600 inline-block bg-red-50 px-4 py-1 rounded-md text-xs">
-            {errors?.title}
+            {errors.title}
           </p>
         )}
       </div>
@@ -89,15 +88,15 @@ export const PostForm = () => {
           Description
         </label>
         <Textarea
-          name="post-description"
+          name="description"
           title="Startup Description"
           className="input-text block w-full mt-2 rounded-md border-0  h-11 px-4 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
           id="description"
         />
 
-        {errors?.description && (
+        {errors.description && (
           <p className="mt-2 text-red-600 inline-block bg-red-50 px-4 py-1 rounded-md text-xs">
-            {errors?.description}
+            {errors.description}
           </p>
         )}
       </div>
@@ -111,15 +110,15 @@ export const PostForm = () => {
           Category
         </label>
         <Input
-          name="post-category"
+          name="category"
           title="Category"
           className="input-text block w-full mt-2 rounded-md border-0  h-11 px-4 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
           id="category"
         />
 
-        {errors?.category && (
+        {errors.category && (
           <p className="mt-2 text-red-600 inline-block bg-red-50 px-4 py-1 rounded-md text-xs">
-            {errors?.category}
+            {errors.category}
           </p>
         )}
       </div>
@@ -134,14 +133,14 @@ export const PostForm = () => {
         </label>
         <Input
           title="Link"
-          name="post-image"
+          name="image"
           className="input-text block w-full mt-2 rounded-md border-0  h-11 px-4 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
           id="link"
         />
 
-        {errors?.link && (
+        {errors.link && (
           <p className="mt-2 text-red-600 inline-block bg-red-50 px-4 py-1 rounded-md text-xs">
-            {errors?.link}
+            {errors.link}
           </p>
         )}
       </div>
@@ -163,9 +162,9 @@ export const PostForm = () => {
           onChange={(value) => setPitch(value ?? "")}
         />
 
-        {errors?.pitch && (
+        {errors.pitch && (
           <p className="mt-2 text-red-600 inline-block bg-red-50 px-4 py-1 rounded-md text-xs">
-            {errors?.pitch}
+            {errors.pitch}
           </p>
         )}
       </div>

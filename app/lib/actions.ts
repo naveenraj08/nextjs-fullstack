@@ -1,69 +1,63 @@
 "use server";
 
 import { auth } from "@/auth";
-import { parseServerActionResponse } from "./utils";
 import slugify from "slugify";
 import { writeClient } from "@/sanity/lib/write-client";
+import { parseServerActionResponse } from "./utils";
 
-export const createPitch = async (state: any, form: FormData, pitch: string) => {
-    const session = await auth();
-    console.log("Session:", session);
+export const createPitch = async (
+  state: any,
+  form: FormData,
+  pitch: string
+) => {
+  const session = await auth();
 
-    if (!session) return parseServerActionResponse({
-        error: "Not Signed in",
-        status: "ERROR"
+  if (!session)
+    return parseServerActionResponse({
+      error: "Not signed in",
+      status: "ERROR",
     });
 
-    const { title, description, category, link } = Object.fromEntries(
-        Array.from(form).filter(([key]) => key !== 'pitch'),
-    );
+  const formData = Object.fromEntries(form);
+  const title = formData.title ? String(formData.title) : "";
 
-    if (!title) {
-        return parseServerActionResponse({
-            error: "Title is required",
-            status: "ERROR"
-        });
-    }
+  if (!title)
+    return parseServerActionResponse({
+      error: "Title is required",
+      status: "ERROR",
+    });
 
-    const slug = slugify(title as string, { lower: true, strict: true });
-
+  const slug = slugify(title, { lower: true, strict: true });
+  try {
     const startup = {
-        _type: 'startup',
-        title,
-        description,
-        category,
-        image: link,
-        slug: {
-            _type: "slug", // Fixed _type
-            current: slug
-        },
-        author: {
-            _type: 'reference',
-            _ref: session?.id
-        },
-        pitch,
+      title,
+      description: formData.description,
+      category: formData.category,
+      image: formData.image,
+      slug: {
+        _type: "slug",
+        current: slug,
+      },
+      author: {
+        _type: "reference",
+        _ref: session?.id,
+      },
+      pitch,
     };
 
-    console.log("Startup object:", startup);
+    const result = await writeClient.create({ _type: "startup", ...startup });
 
-    try {
-        console.log("Sanity writeClient:", writeClient);
+    return parseServerActionResponse({
+      ...result,
+      error: "",
+      status: "SUCCESS",
+    });
+  } catch (error) {
+    console.log(error);
 
-        const result = await writeClient.create(startup);
-
-        console.log("Sanity create result:", result);
-
-        return parseServerActionResponse({
-            ...result,
-            error: '',
-            status: 'SUCCESS'
-        });
-
-    } catch (error: any) {
-        console.error("Sanity Create Error:", error.message, error.stack);
-        return parseServerActionResponse({
-            error: error.message || JSON.stringify(error),
-            status: "ERROR"
-        });
-    }
+    return parseServerActionResponse({
+      error: JSON.stringify(error),
+      status: "ERROR",
+    });
+  }
 };
