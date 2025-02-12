@@ -29,6 +29,28 @@ export const createPitch = async (
 
   const slug = slugify(title, { lower: true, strict: true });
   try {
+
+
+    const existingAuthor = await writeClient.fetch(
+      `*[_type == "author" && email == $email][0]`,
+      { email: session?.user.email }
+    );
+
+    let authorId = existingAuthor?._id;
+
+    // If author doesn't exist, create a new one
+    if (!authorId) {
+      const newAuthor = await writeClient.create({
+        _type: "author",
+        name: session?.user.name,
+        email: session?.user.email,
+      });
+
+      authorId = newAuthor._id;
+    }
+
+    console.log(authorId);
+
     const startup = {
       title,
       description: formData.description,
@@ -40,12 +62,14 @@ export const createPitch = async (
       },
       author: {
         _type: "reference",
-        _ref: session?.id,
+        _ref: authorId,
       },
       pitch,
     };
 
     const result = await writeClient.create({ _type: "startup", ...startup });
+
+    console.log(result)
 
     return parseServerActionResponse({
       ...result,
