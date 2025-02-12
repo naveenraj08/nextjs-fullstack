@@ -33,6 +33,8 @@ export const PostForm = () => {
       if (result.status === "SUCCESS") {
         router.push(`/startup/${result._id}`);
       }
+
+      return result;
     } catch (error) {
       console.log(error);
       if (error instanceof z.ZodError) {
