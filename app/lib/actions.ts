@@ -29,8 +29,6 @@ export const createPitch = async (
 
   const slug = slugify(title, { lower: true, strict: true });
   try {
-
-
     const existingAuthor = await writeClient.fetch(
       `*[_type == "author" && email == $email][0]`,
       { email: session?.user.email }
@@ -69,7 +67,7 @@ export const createPitch = async (
 
     const result = await writeClient.create({ _type: "startup", ...startup });
 
-    console.log(result)
+    console.log(result);
 
     return parseServerActionResponse({
       ...result,
