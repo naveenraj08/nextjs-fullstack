@@ -38,27 +38,25 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       return true;
     },
 
-    async jwt({ token, account, profile }: { token: JWT; account?: Account | null; profile?: Profile | null }) {
+    async jwt({ token, account, profile }) {
       if (account && profile) {
         const user = await client.withConfig({ useCdn: false }).fetch(AUTHOR_BY_GITHUB_ID, { id: profile.id });
 
         token.id = user?._id || profile?.id;
+        token._id = user?._id || profile?.id;  // Ensure _id is set
         token.username = user?.username || profile?.login || "";
-        token.email = user?.email || "";
       }
-
       return token;
     },
 
-    async session({ session, token }: { session: Session; token: JWT }) {
+    async session({ session, token }) {
       session.user = {
         ...session.user,
-        id: token.id as string,
-        username: token.username as string,
-        email: token.email as string,
+        id: token.id,
+        _id: token._id, // Ensure session contains _id
+        username: token.username,
       };
       return session;
     }
-
   },
 });
