@@ -9,12 +9,26 @@ import { Send } from "lucide-react";
 import { z } from "zod";
 import { createPitch } from "../lib/actions";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export const PostForm = () => {
   const [pitch, setPitch] = useState("");
   const [errors, setErrors] = useState({});
+  const [file, setFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
+
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const selectedFile = event.target.files?.[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+      setPreview(URL.createObjectURL(selectedFile));
+    }
+  };
 
   const handleFormSubmit = async (prevState: any, formData: FormData) => {
     try {
@@ -22,7 +36,7 @@ export const PostForm = () => {
         title: formData.get("title") as string,
         description: formData.get("description") as string,
         category: formData.get("category") as string,
-        image: formData.get("image") as string,
+        image: formData.get("image") as File, // Use uploaded image URL,
         pitch,
       };
 
@@ -103,7 +117,6 @@ export const PostForm = () => {
         )}
       </div>
 
-      {}
       <div>
         <label
           htmlFor="category"
@@ -124,30 +137,30 @@ export const PostForm = () => {
           </p>
         )}
       </div>
-
-      {}
       <div>
         <label
-          htmlFor="link"
+          htmlFor="image"
           className="post-form-title font-medium text-xs text-gray-500"
         >
-          Image URL
+          Upload image
         </label>
         <Input
-          title="Link"
+          type="file"
+          onChange={handleFileChange}
+          accept="image/*"
           name="image"
-          className="input-text block w-full mt-2 rounded-md border-0  h-11 px-4 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
-          id="link"
+          id="image"
         />
-
-        {errors.link && (
-          <p className="mt-2 text-red-600 inline-block bg-red-50 px-4 py-1 rounded-md text-xs">
-            {errors.link}
-          </p>
+        {preview && (
+          <Image
+            src={preview}
+            alt={`Preview`}
+            className="transition-all duration-300 ease-in-out group-hover:scale-105 max-h-[230px] w-full min-h-[230px] object-cover"
+            width={120}
+            height={120}
+          />
         )}
       </div>
-
-      {}
       <div>
         <label
           htmlFor="message"

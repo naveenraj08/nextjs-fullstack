@@ -35,10 +35,12 @@ export const startup = defineType({
             validation: (Rule) => Rule.min(1).max(20).required().error('Please provide the category..!'),
         }),
         defineField({
-            name: "image",
-            type: "url",
+            name: 'poster',
+            type: 'image',
+            options: {
+                hotspot: true,
+            },
             validation: (Rule) => Rule.required(),
-            
         }),
         defineField({
             name: "pitch",

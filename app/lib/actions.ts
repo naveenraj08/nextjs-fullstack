@@ -13,8 +13,6 @@ export const createPitch = async (
 ) => {
   const session = await auth();
 
-  console.log(session)
-
   if (!session || !session.user?.id) {
     return parseServerActionResponse({
       error: "Not signed in or invalid session",
@@ -37,6 +35,18 @@ export const createPitch = async (
   }
 
   const formData = Object.fromEntries(form);
+
+  if (!formData.image) {
+    return parseServerActionResponse({
+      error: "Image file is required",
+      status: "ERROR",
+    });
+  }
+
+  // Convert file to Buffer and upload to Sanity
+  const buffer = Buffer.from(await formData.image.arrayBuffer());
+  const uploadedImage = await writeClient.assets.upload("image", buffer);
+
   const title = formData.title ? String(formData.title) : "";
 
   if (!title)
@@ -52,7 +62,7 @@ export const createPitch = async (
       title,
       description: formData.description,
       category: formData.category,
-      image: formData.image,
+      image: uploadedImage.url,
       slug: {
         _type: "slug",
         current: slug,
@@ -65,8 +75,6 @@ export const createPitch = async (
     };
 
     const result = await writeClient.create({ _type: "startup", ...startup });
-
-    console.log(result);
 
     return parseServerActionResponse({
       ...result,
