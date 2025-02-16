@@ -1,15 +1,18 @@
-## Next JS + TailwindCSS + shadcn/ui
+## Sanity CMS + Next JS 15.1.6 + Shadcn/ui TailwindCSS
 
-A basic blog app to explore next.js concepts, with CRUD operations.
+A beginner blog app to explore next.js concepts, with CRUD operations.
 
 ### Features of the application
 
-* OAuth Authentication
-* Search Posts
-* Blog Post Listing
-* Blog Post Details
-* Blog Post Form
-* User Profile Management
-* User Comments
-* Responsive Design
-* Dark Mode
+- OAuth Authentication
+- Search Posts
+- User Profile Management
+- User Comments
+- Responsive Design
+- Dark Mode
+
+### Future Implementation
+
+- AI SEO Assistance
+- AI Blog Post Idea Generator
+- AI Content Auto-Completion
