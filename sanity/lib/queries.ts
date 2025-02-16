@@ -67,3 +67,26 @@ export const AUTHOR_BY_GITHUB_ID = defineQuery(
         }
     `
 );
+
+
+export const GET_AUTHOR_POSTS = defineQuery(
+    `
+    *[_type == "startup" && author._ref == $id] | order(_createdAt desc) {
+        _id,
+        title,
+        slug,
+        _createdAt,
+        author -> {
+            _id,
+            name,
+            image,
+            bio
+        },
+        views,
+        description,
+        category,
+        image,
+        pitch
+    }
+    `
+)
