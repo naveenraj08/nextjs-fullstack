@@ -15,8 +15,6 @@ export default async function Home({
 
   const session = await auth();
 
-  console.log(`Session ID ${session?.user.id}`);
-
   return (
     <div className="divide-y divide-gray-100">
       <section className="bg-white dark:bg-gray-900">

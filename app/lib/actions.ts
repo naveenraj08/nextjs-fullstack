@@ -4,6 +4,7 @@ import { auth } from "@/auth";
 import slugify from "slugify";
 import { writeClient } from "@/sanity/lib/write-client";
 import { parseServerActionResponse } from "./utils";
+import { client } from "@/sanity/lib/client";
 
 export const createPitch = async (
   state: any,
@@ -12,13 +13,40 @@ export const createPitch = async (
 ) => {
   const session = await auth();
 
-  if (!session)
+  if (!session || !session.user?.id) {
     return parseServerActionResponse({
-      error: "Not signed in",
+      error: "Not signed in or invalid session",
       status: "ERROR",
     });
+  }
+
+  // Fetch the user document from Sanity
+  const userId = session.user.id;
+  const user = await client.withConfig({ useCdn: false }).fetch(
+    `*[_type == "author" && id == $id][0]`, // Query to find user
+    { id: userId }
+  );
+
+  if (!user) {
+    return parseServerActionResponse({
+      error: "User not found in Sanity",
+      status: "ERROR",
+    });
+  }
 
   const formData = Object.fromEntries(form);
+
+  if (!formData.image) {
+    return parseServerActionResponse({
+      error: "Image file is required",
+      status: "ERROR",
+    });
+  }
+
+  // Convert file to Buffer and upload to Sanity
+  const buffer = Buffer.from(await formData.image.arrayBuffer());
+  const uploadedImage = await writeClient.assets.upload("image", buffer);
+
   const title = formData.title ? String(formData.title) : "";
 
   if (!title)
@@ -29,45 +57,24 @@ export const createPitch = async (
 
   const slug = slugify(title, { lower: true, strict: true });
   try {
-    const existingAuthor = await writeClient.fetch(
-      `*[_type == "author" && email == $email][0]`,
-      { email: session?.user.email }
-    );
-
-    let authorId = existingAuthor?._id;
-
-    // If author doesn't exist, create a new one
-    if (!authorId) {
-      const newAuthor = await writeClient.create({
-        _type: "author",
-        name: session?.user.name,
-        email: session?.user.email,
-      });
-
-      authorId = newAuthor._id;
-    }
-
-    console.log(authorId);
 
     const startup = {
       title,
       description: formData.description,
       category: formData.category,
-      image: formData.image,
+      image: uploadedImage.url,
       slug: {
         _type: "slug",
         current: slug,
       },
       author: {
         _type: "reference",
-        _ref: authorId,
+        _ref: user._id,
       },
       pitch,
     };
 
     const result = await writeClient.create({ _type: "startup", ...startup });
-
-    console.log(result);
 
     return parseServerActionResponse({
       ...result,

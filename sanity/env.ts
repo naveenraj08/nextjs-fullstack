@@ -12,7 +12,7 @@ export const projectId = assertValue(
 )
 
 
-export const token = process.env.SANITY_API_WRITE_TOKEN;
+export const token = process.env.SANITY_WRITE_TOKEN;
 
 
 function assertValue<T>(v: T | undefined, errorMessage: string): T {
