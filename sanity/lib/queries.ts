@@ -68,6 +68,20 @@ export const AUTHOR_BY_GITHUB_ID = defineQuery(
     `
 );
 
+export const GET_AUTHOR_BY_ID = defineQuery(
+    `
+        *[_type == "author" && _id == $id][0] {
+            _id,
+            id,
+            name,
+            username,
+            email,
+            image,
+            bio
+        }
+    `
+);
+
 
 export const GET_AUTHOR_POSTS = defineQuery(
     `
