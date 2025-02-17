@@ -31,8 +31,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async signIn({ user, account, profile }: { user: User; account?: Account | null; profile?: Profile | null }) {
       if (!profile) return false; // Ensure profile exists
 
-      console.log("OAuth Profile:", profile);
-
       const { bio } = profile;
       const { name, email, image } = user;
 
