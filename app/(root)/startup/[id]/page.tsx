@@ -60,7 +60,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
         width="1200"
         height="370"
       />
-      <div className="p-5 px-10">
+      <div className="p-5 lg:px-10">
         <div className="flex justify-between items-start gap-5">
           <div className="mb-8 inline-flex items-center gap-3 ">
             <Link
