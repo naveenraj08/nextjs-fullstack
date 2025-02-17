@@ -22,10 +22,13 @@ export const createPitch = async (
 
   // Fetch the user document from Sanity
   const userId = session.user.id;
+  console.log(userId);
   const user = await client.withConfig({ useCdn: false }).fetch(
     `*[_type == "author" && id == $id][0]`, // Query to find user
     { id: userId }
   );
+
+
 
   if (!user) {
     return parseServerActionResponse({
