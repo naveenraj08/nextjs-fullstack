@@ -72,7 +72,7 @@ export const createPitch = async (
       },
       author: {
         _type: "reference",
-        _ref: user._id,
+        _ref: user?._id,
       },
       pitch,
     };
