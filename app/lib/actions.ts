@@ -21,14 +21,12 @@ export const createPitch = async (
   }
 
   // Fetch the user document from Sanity
-  const userId = session.user.id;
-  console.log(userId);
+  const userId = session.user.id.toString();
+
   const user = await client.withConfig({ useCdn: false }).fetch(
-    `*[_type == "author" && id == $id][0]`, // Query to find user
+    `*[_type == "author" && id == $id]`, // Query to find user
     { id: userId }
   );
-
-
 
   if (!user) {
     return parseServerActionResponse({
@@ -60,7 +58,6 @@ export const createPitch = async (
 
   const slug = slugify(title, { lower: true, strict: true });
   try {
-
     const startup = {
       title,
       description: formData.description,
@@ -72,7 +69,7 @@ export const createPitch = async (
       },
       author: {
         _type: "reference",
-        _ref: user._id,
+        _ref: user.length > 0 ? user[0]._id : null,
       },
       pitch,
     };
