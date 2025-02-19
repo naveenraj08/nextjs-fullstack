@@ -69,11 +69,7 @@ export const createPitch = async (
       },
       author: {
         _type: "reference",
-<<<<<<< HEAD
         _ref: user.length > 0 ? user[0]._id : null,
-=======
-        _ref: user?._id,
->>>>>>> 64ebc0bb3fbdf5daa9f6a7ca29cadee6c15d57ce
       },
       pitch,
     };
