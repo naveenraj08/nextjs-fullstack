@@ -103,4 +103,18 @@ export const GET_AUTHOR_POSTS = defineQuery(
         pitch
     }
     `
-)
+);
+
+
+export const GET_RECENT_POST = defineQuery(
+    `
+    *[_type == "startup" && _createdAt >= $fromTimeStamp] {
+        _id,
+        title,
+        image,
+        _createdAt,
+        author,
+        slug
+    }
+    `
+);
