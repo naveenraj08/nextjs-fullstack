@@ -25,21 +25,23 @@ export const PostForm = () => {
   ) => {
     const selectedFile = event.target.files?.[0];
     if (selectedFile) {
-      setFile(selectedFile);
-      setPreview(URL.createObjectURL(selectedFile));
+      if (!selectedFile.type.includes("application")) {
+        setFile(selectedFile);
+        setPreview(URL.createObjectURL(selectedFile));
+      }
     }
   };
 
   const handleFormSubmit = async (prevState: any, formData: FormData) => {
-    try {
-      const formValues = {
-        title: formData.get("title") as string,
-        description: formData.get("description") as string,
-        category: formData.get("category") as string,
-        image: formData.get("image") as File, // Use uploaded image URL,
-        pitch,
-      };
+    const formValues = {
+      title: formData.get("title") as string,
+      description: formData.get("description") as string,
+      category: formData.get("category") as string,
+      image: formData.get("image") as File, // Use uploaded image URL,
+      pitch,
+    };
 
+    try {
       await formSchema.parseAsync(formValues);
 
       const result = await createPitch(prevState, formData, pitch);
@@ -50,21 +52,30 @@ export const PostForm = () => {
 
       return result;
     } catch (error) {
-      console.log(error);
       if (error instanceof z.ZodError) {
         const fieldErrors = error.flatten().fieldErrors;
         setErrors(fieldErrors as unknown as Record<string, string>);
-        return { ...prevState, error: "Validation failed", status: "ERROR" };
+        return {
+          ...prevState,
+          ...formValues,
+          error: "Validation failed",
+          status: "ERROR",
+        };
       }
 
       return {
         ...prevState,
+        ...formValues,
         error: "An Unexpected error has occurred",
       };
     }
   };
 
   const [state, formAction, isPending] = useActionState(handleFormSubmit, {
+    title: "",
+    description: "",
+    category: "",
+    image: null,
     error: "",
     status: "INITIAL",
   });
@@ -87,11 +98,12 @@ export const PostForm = () => {
         <Input
           name="title"
           title="Startup Title"
+          defaultValue={state.title}
           className="input-text block w-full mt-2 rounded-md border-0 h-11 px-4 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
           id="title"
         />
         {errors.title && (
-          <p className="mt-2 text-red-600 inline-block bg-red-50 px-4 py-1 rounded-md text-xs">
+          <p className="mt-2 text-red-600 inline-block rounded-md text-xs">
             {errors.title}
           </p>
         )}
@@ -106,12 +118,13 @@ export const PostForm = () => {
         <Textarea
           name="description"
           title="Startup Description"
+          defaultValue={state.description}
           className="input-text block w-full mt-2 rounded-md border-0  h-11 px-4 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
           id="description"
         />
 
         {errors.description && (
-          <p className="mt-2 text-red-600 inline-block bg-red-50 px-4 py-1 rounded-md text-xs">
+          <p className="mt-2 text-red-600 inline-block rounded-md text-xs">
             {errors.description}
           </p>
         )}
@@ -127,12 +140,13 @@ export const PostForm = () => {
         <Input
           name="category"
           title="Category"
+          defaultValue={state.category}
           className="input-text block w-full mt-2 rounded-md border-0  h-11 px-4 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
           id="category"
         />
 
         {errors.category && (
-          <p className="mt-2 text-red-600 inline-block bg-red-50 px-4 py-1 rounded-md text-xs">
+          <p className="mt-2 text-red-600 inline-block rounded-md text-xs">
             {errors.category}
           </p>
         )}
@@ -149,14 +163,21 @@ export const PostForm = () => {
           onChange={handleFileChange}
           accept="image/*"
           name="image"
+          defaultValue={state.image}
           id="image"
+          className="input-text block w-full mt-2 rounded-md border-0  h-11 px-4 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
         />
+        {errors.image && (
+          <p className="mt-2 text-red-600 inline-block rounded-md text-xs">
+            {errors.image}
+          </p>
+        )}
         {preview && (
           <Image
             src={preview}
             alt={`Preview`}
-            className="transition-all duration-300 ease-in-out group-hover:scale-105 max-h-[230px] w-full min-h-[230px] object-cover"
-            width={120}
+            className="mt-5 rounded-md"
+            width={510}
             height={120}
           />
         )}
@@ -178,7 +199,7 @@ export const PostForm = () => {
         />
 
         {errors.pitch && (
-          <p className="mt-2 text-red-600 inline-block bg-red-50 px-4 py-1 rounded-md text-xs">
+          <p className="mt-2 text-red-600 inline-block rounded-md text-xs">
             {errors.pitch}
           </p>
         )}
