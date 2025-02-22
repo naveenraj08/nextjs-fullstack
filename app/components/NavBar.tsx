@@ -61,7 +61,7 @@ export const NavBar = async () => {
                 >
                   <button
                     type="submit"
-                    className="relative rounded-full p-2 text-gray-600 focus:outline-none hover:bg-gray-100 focus:bg-gray-100 focus:ring-2 focus:ring-gray-400"
+                    className="relative rounded-full p-2 text-white bg-red-500 focus:outline-none"
                     title="Log out"
                   >
                     <span className="sr-only">Log out</span>
