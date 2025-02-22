@@ -14,8 +14,6 @@ export default async function Home({
 
   const { data: posts } = await sanityFetch({ query: STARTUP_QUERY, params });
 
-  console.log(posts);
-
   return (
     <div className="divide-y divide-gray-100">
       <section className="bg-white dark:bg-gray-900">
