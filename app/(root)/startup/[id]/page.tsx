@@ -4,9 +4,9 @@ import { STARTUP_QUERY_BY_ID } from "@/sanity/lib/queries";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import MarkdownIt from "markdown-it";
 import { Metadata } from "next";
 import Views from "@/app/components/Views";
+import RenderContent from "@/app/components/PreviewContent";
 
 export const experimental_ppr = true;
 
@@ -46,8 +46,7 @@ export async function generateMetadata({
 const Page = async ({ params }: { params: { id: string } }) => {
   const { id } = await params;
   const post = await client.fetch(STARTUP_QUERY_BY_ID, { id });
-
-  const md = MarkdownIt();
+  console.log(post);
 
   if (!post) return notFound();
 
@@ -90,16 +89,15 @@ const Page = async ({ params }: { params: { id: string } }) => {
           </div>
         </div>
 
-        <h1 className="mb-5 text-xl max-w-4xl font-extrabold tracking-tight leading-6 text-gray-900 md:text-2xl lg:text-4xl">
+        <h1 className="mb-5 text-xl max-w-4xl font-black tracking-tight leading-6 text-gray-900 md:text-2xl lg:text-4xl">
           {post.title}
         </h1>
         <p className="px-4 cursor-pointer inline-block py-1 font-medium text-sm bg-blue-50 text-blue-600 rounded-lg">
           #{post?.category}
         </p>
-        <div
-          className="mt-10"
-          dangerouslySetInnerHTML={{ __html: md.render(post?.pitch || "") }}
-        ></div>
+        <div className="mt-10">
+          <RenderContent content={post?.pitch} />
+        </div>
       </div>
     </section>
   );
