@@ -2,7 +2,6 @@ export function cn(...classes: string[]) {
     return classes.filter(Boolean).join(" ");
 }
 
-
 // Date conversion
 export function formateDate(date: string) {
     return new Date(date).toLocaleDateString("en-US", {

@@ -3,6 +3,7 @@ import { SearchForm } from "@/app/components/SearchForm";
 import { Post, StartupTypeCard } from "../../components/Post";
 import { STARTUP_QUERY } from "@/sanity/lib/queries";
 import { sanityFetch, SanityLive } from "@/sanity/lib/live";
+import { BackgroundBeamsWithCollision } from "@/components/ui/background-beams-with-collision";
 
 export default async function Home({
   searchParams,
@@ -16,7 +17,7 @@ export default async function Home({
 
   return (
     <div className="divide-y divide-gray-100">
-      <section className="bg-white dark:bg-gray-900">
+      <BackgroundBeamsWithCollision>
         <div className=" max-w-7xl mx-auto py-8 px-4 text-center lg:py-16 lg:px-12">
           <Link
             href="#"
@@ -38,7 +39,7 @@ export default async function Home({
             <SearchForm query={query} />
           </div>
         </div>
-      </section>
+      </BackgroundBeamsWithCollision>
 
       <section className="bg-gray-50 dark:bg-gray-900">
         <div className="max-w-7xl mx-auto py-8 px-4 text-center lg:py-16 lg:px-12">
