@@ -27,10 +27,10 @@ export const NavBar = async () => {
               <Link href={"/"}>
                 <Image
                   className="dark:invert"
-                  src="/next.svg"
-                  alt="Next.js logo"
-                  width={120}
-                  height={30}
+                  src="/writer.svg"
+                  alt="Application logo"
+                  width={150}
+                  height={50}
                   priority
                 />
               </Link>
