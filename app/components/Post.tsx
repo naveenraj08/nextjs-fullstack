@@ -10,7 +10,7 @@ export const Post = ({ post }: { post: StartupTypeCard }) => {
   const { image, title, _createdAt, views, author, _id, description } = post;
 
   return (
-    <li className="w-full p-4 bg-white flex flex-col items-start justify-start space-y-5 border border-gray-100 rounded-post-card shadow-post-card duration-300 ease-in-out group">
+    <li className="w-full p-4 bg-white flex flex-col items-start justify-start space-y-5 border border-gray-100 rounded-post-card duration-300 ease-in-out group">
       <div className="w-full rounded-xl overflow-hidden block">
         <Link href={`/startup/${_id}`} className="block ">
           <Image
