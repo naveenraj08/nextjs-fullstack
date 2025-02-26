@@ -88,7 +88,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
           </div>
         </div>
 
-        <h1 className="mb-5 text-xl max-w-4xl font-black tracking-tight leading-6 text-gray-900 md:text-2xl lg:text-4xl">
+        <h1 className="mb-5 max-w-4xl font-black tracking-tight leading-[1.3] text-gray-900 text-2xl lg:text-4xl">
           {post.title}
         </h1>
         <p className="px-4 cursor-pointer inline-block py-1 font-medium text-sm bg-blue-50 text-blue-600 rounded-lg">
