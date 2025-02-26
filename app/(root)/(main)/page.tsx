@@ -2,8 +2,7 @@ import Link from "next/link";
 import { SearchForm } from "@/app/components/SearchForm";
 import { Post, StartupTypeCard } from "../../components/Post";
 import { STARTUP_QUERY } from "@/sanity/lib/queries";
-import { sanityFetch, SanityLive } from "@/sanity/lib/live";
-import { BackgroundBeamsWithCollision } from "@/components/ui/background-beams-with-collision";
+import { sanityFetch } from "@/sanity/lib/live";
 
 export default async function Home({
   searchParams,
@@ -61,8 +60,6 @@ export default async function Home({
           </ul>
         </div>
       </section>
-
-      <SanityLive />
     </div>
   );
 }
