@@ -45,7 +45,7 @@ export const NavBar = async () => {
               <div className="mt-10 space-y-3 sm:mt-0 sm:space-y-0">
                 <Link
                   href={"/startup/create"}
-                  className="relative inline-block rounded-lg bg-blue-500 text-white px-5 py-2 text-sm font-medium focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  className="relative inline-block rounded-lg bg-[#EA4335] text-white px-5 py-2 text-sm font-medium focus:ring-2 focus:ring-offset-2 focus:ring-[#EA4335]"
                 >
                   Create Post
                 </Link>

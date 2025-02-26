@@ -17,7 +17,7 @@ export default async function Home({
 
   return (
     <div className="divide-y divide-gray-100">
-      <BackgroundBeamsWithCollision>
+      <section className="bg-white">
         <div className=" max-w-7xl mx-auto py-8 px-4 text-center lg:py-16 lg:px-12">
           <Link
             href="#"
@@ -29,7 +29,8 @@ export default async function Home({
             </span>
           </Link>
           <h1 className="mb-4 text-4xl max-w-4xl mx-auto font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-7xl">
-            Unlock a World of Insight & Inspiration
+            Unlock a World of Insight &{" "}
+            <span className="text-[#EA4335]">Inspiration</span>
           </h1>
           <p className="mb-8 text-lg font-normal text-gray-500 lg:text-xl">
             Discover stories, tutorials, and expert advice crafted to empower
@@ -39,7 +40,7 @@ export default async function Home({
             <SearchForm query={query} />
           </div>
         </div>
-      </BackgroundBeamsWithCollision>
+      </section>
 
       <section className="bg-gray-50 dark:bg-gray-900">
         <div className="max-w-7xl mx-auto py-8 px-4 text-center lg:py-16 lg:px-12">
