@@ -27,7 +27,7 @@ export default async function Home({
               Announcement goes here! 👏
             </span>
           </Link>
-          <h1 className="mb-4 text-4xl max-w-4xl mx-auto font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-7xl">
+          <h1 className="mb-4 max-w-4xl mx-auto font-extrabold tracking-tight leading-none text-gray-900 text-5xl lg:text-7xl">
             Unlock a World of Insight &{" "}
             <span className="text-[#EA4335]">Inspiration</span>
           </h1>
