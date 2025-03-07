@@ -5,12 +5,19 @@ import Link from "next/link";
 import React from "react";
 import { formateDate } from "../lib/utils";
 
-export const RecentPosts = ({ post }) => {
-  const { _id, title, image, _createdAt } = post;
+interface Post {
+  title: string;
+  image: string;
+  _createdAt: string;
+  slug: { current: string };
+}
+
+export const RecentPosts = ({ post }: { post: Post }) => {
+  const { title, image, _createdAt, slug } = post;
   return (
     <li>
       <Link
-        href={`/startup/${_id}`}
+        href={`/startup/${slug?.current}`}
         className="p-3 rounded-md flex items-center gap-4 w-full text-sm transition duration-200 hover:bg-gray-100"
       >
         <span>
