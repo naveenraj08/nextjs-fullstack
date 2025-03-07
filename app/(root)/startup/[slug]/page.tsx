@@ -53,13 +53,15 @@ const Page = async ({ params }: { params: { slug: string } }) => {
 
   return (
     <section className="bg-white border border-gray-100 dark:bg-gray-900 rounded-t-lg rounded-b-lg overflow-hidden">
-      <Image
-        src={post?.image}
-        alt={post?.title}
-        className="w-full h-[370px] object-cover"
-        width="1200"
-        height="370"
-      />
+      {post?.image && (
+        <Image
+          src={post?.image}
+          alt={post?.title}
+          className="w-full h-[370px] object-cover"
+          width="1200"
+          height="370"
+        />
+      )}
       <div className="p-5 lg:px-10">
         <div className="flex justify-between items-start gap-5">
           <div className="mb-8 inline-flex items-center gap-3 ">
