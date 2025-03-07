@@ -7,12 +7,12 @@ import { Author, Startup } from "@/sanity/types";
 export type StartupTypeCard = Omit<Startup, "author"> & { author?: Author };
 
 export const Post = ({ post }: { post: StartupTypeCard }) => {
-  const { image, title, _createdAt, views, author, _id, description } = post;
+  const { image, title, _createdAt, views, author, description, slug } = post;
 
   return (
     <li className="w-full p-4 bg-white flex flex-col items-start justify-start space-y-5 border border-gray-100 rounded-post-card duration-300 ease-in-out group">
       <div className="w-full rounded-xl overflow-hidden block">
-        <Link href={`/startup/${_id}`} className="block ">
+        <Link href={`/startup/${slug?.current}`} className="block ">
           <Image
             src={image}
             alt={title}
@@ -33,7 +33,10 @@ export const Post = ({ post }: { post: StartupTypeCard }) => {
 
       <div>
         <h2 className="text-xl text-left font-semibold">
-          <Link href={`/startup/${_id}`} className="text-xl font-semibold">
+          <Link
+            href={`/startup/${slug?.current}`}
+            className="text-xl font-semibold"
+          >
             {title}
           </Link>
         </h2>

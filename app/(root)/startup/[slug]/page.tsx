@@ -1,6 +1,6 @@
 import { formateDate, formateName } from "@/app/lib/utils";
 import { client } from "@/sanity/lib/client";
-import { STARTUP_QUERY_BY_ID } from "@/sanity/lib/queries";
+import { STARTUP_QUERY_BY_SLUG } from "@/sanity/lib/queries";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -11,15 +11,15 @@ import RenderContent from "@/app/components/PreviewContent";
 export const experimental_ppr = true;
 
 interface PageProps {
-  params: { id: string };
+  params: { slug: string };
 }
 
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
-  const { id } = await params;
+  const { slug } = params;
 
-  const post = await client.fetch(STARTUP_QUERY_BY_ID, { id });
+  const post = await client.fetch(STARTUP_QUERY_BY_SLUG, { slug });
 
   if (!post)
     return { title: "Not Found", description: "This page does not exist" };
@@ -43,17 +43,19 @@ export async function generateMetadata({
   };
 }
 
-const Page = async ({ params }: { params: { id: string } }) => {
-  const { id } = await params;
-  const post = await client.fetch(STARTUP_QUERY_BY_ID, { id });
+const Page = async ({ params }: { params: { slug: string } }) => {
+  const { slug } = params;
+
+  console.log("id", slug);
+  const post = await client.fetch(STARTUP_QUERY_BY_SLUG, { slug });
 
   if (!post) return notFound();
 
   return (
     <section className="bg-white border border-gray-100 dark:bg-gray-900 rounded-t-lg rounded-b-lg overflow-hidden">
       <Image
-        src={post.image}
-        alt={post.title}
+        src={post?.image}
+        alt={post?.title}
         className="w-full h-[370px] object-cover"
         width="1200"
         height="370"
@@ -89,7 +91,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
         </div>
 
         <h1 className="mb-5 max-w-4xl font-black tracking-tight leading-[1.3] text-gray-900 text-4xl">
-          {post.title}
+          {post?.title}
         </h1>
         <p className="px-4 cursor-pointer inline-block py-1 font-medium bg-blue-50 text-blue-600 rounded-lg">
           #{post?.category}
