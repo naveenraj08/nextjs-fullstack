@@ -2,7 +2,7 @@
 
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import React, { useActionState, useState } from "react";
+import React, { useActionState, useEffect, useState } from "react";
 import MDEditor from "@uiw/react-md-editor";
 import { formSchema } from "../lib/validation";
 import { Send } from "lucide-react";
@@ -13,6 +13,7 @@ import Image from "next/image";
 
 export const PostForm = () => {
   const [pitch, setPitch] = useState("");
+  const [optimizeTitle, setOptimizeTitle] = useState("");
   const [errors, setErrors] = useState({});
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
@@ -71,6 +72,27 @@ export const PostForm = () => {
     }
   };
 
+  const fetchData = async () => {
+    try {
+      const response = await fetch("/api/generate", {
+        // Replace with your actual route
+        method: "POST",
+        body: JSON.stringify(optimizeTitle),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const responseData = await response.json(); // Or response.text() if not JSON
+      console.log("Response:", responseData);
+      return responseData; // Return the response data if needed
+    } catch (error) {
+      console.error("Error posting data:", error);
+      throw error; // Rethrow the error for the calling function to handle
+    }
+  };
+
   const [state, formAction, isPending] = useActionState(handleFormSubmit, {
     title: "",
     description: "",
@@ -98,10 +120,14 @@ export const PostForm = () => {
         <Input
           name="title"
           title="Startup Title"
+          onChange={(e) => setOptimizeTitle(e.target.value)}
           defaultValue={state.title}
           className="input-text block w-full mt-2 rounded-md border-0 h-11 px-4 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
           id="title"
         />
+        <button type="button" onClick={fetchData}>
+          Fetch Data from API
+        </button>
         {errors.title && (
           <p className="mt-2 text-red-600 inline-block rounded-md text-xs">
             {errors.title}
