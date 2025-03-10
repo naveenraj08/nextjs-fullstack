@@ -17,7 +17,7 @@ interface PageProps {
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
-  const { slug } = params;
+  const { slug } = await params;
 
   const post = await client.fetch(STARTUP_QUERY_BY_SLUG, { slug });
 
@@ -44,7 +44,7 @@ export async function generateMetadata({
 }
 
 const Page = async ({ params }: { params: { slug: string } }) => {
-  const { slug } = params;
+  const { slug } = await params;
 
   console.log("id", slug);
   const post = await client.fetch(STARTUP_QUERY_BY_SLUG, { slug });
