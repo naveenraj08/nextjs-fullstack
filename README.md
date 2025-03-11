@@ -1,4 +1,4 @@
-## Sanity CMS + Next JS 15.1.6 + Shadcn/ui TailwindCSS
+## Sanity CMS + Next JS 15.2 + Shadcn/ui TailwindCSS
 
 A beginner blog app to explore next.js concepts, with CRUD operations.
 
