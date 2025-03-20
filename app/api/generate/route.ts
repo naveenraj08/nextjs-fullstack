@@ -3,7 +3,6 @@ import { NextResponse } from "next/server";
 
 // Handle POST requests
 export async function POST(req, res) {
-
   try {
     const postTitle = await req.json();
 
@@ -15,7 +14,6 @@ export async function POST(req, res) {
     );
     return NextResponse.json(result.response.text(), { status: 200 }); // Successful response
   } catch (error) {
-    console.error("Error in POST:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }

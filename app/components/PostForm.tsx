@@ -2,7 +2,7 @@
 
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import React, { useActionState, useEffect, useState } from "react";
+import React, { useActionState, useEffect, useRef, useState } from "react";
 import MDEditor from "@uiw/react-md-editor";
 import { formSchema } from "../lib/validation";
 import { Send } from "lucide-react";
@@ -14,12 +14,15 @@ import Image from "next/image";
 export const PostForm = () => {
   const [pitch, setPitch] = useState("");
   const [optimizeTitle, setOptimizeTitle] = useState("");
+  const [optimizedTitle, setOptimizedTitle] = useState();
   const [errors, setErrors] = useState({});
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
+
+  const titleRef = useRef(null);
 
   const handleFileChange = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -72,6 +75,24 @@ export const PostForm = () => {
     }
   };
 
+  useEffect(() => {
+    const title = optimizedTitle && optimizedTitle[0];
+    const seo_optimized_titles = Array.isArray(title?.seo_optimized_titles)
+      ? title.seo_optimized_titles
+      : title?.seo_optimized_titles
+        ? [title.seo_optimized_titles]
+        : title?.seo_optimized_title
+          ? [title.seo_optimized_title]
+          : [];
+
+    console.log(seo_optimized_titles);
+    if (title !== undefined) {
+      titleRef.current.value = seo_optimized_titles;
+      setOptimizeTitle(seo_optimized_titles);
+      titleRef.current?.focus();
+    }
+  }, [optimizedTitle]);
+
   const fetchData = async () => {
     try {
       const response = await fetch("/api/generate", {
@@ -85,24 +106,7 @@ export const PostForm = () => {
       }
 
       const responseData = await response.json();
-      // setOptimizeTitle(responseData);
-      console.log("Response:", responseData);
-      // return responseData; // Return the response data if needed
-
-      // Get the seo_optimized_titles array
-      const seoTitles = responseData?.[0]?.seo_optimized_titles || [];
-      if (seoTitles.length > 0) {
-        const randomIndex = Math.floor(Math.random() * seoTitles.length);
-        const randomTitle = seoTitles[randomIndex];
-        console.log(randomTitle);
-      } else {
-        console.error("seoTitles is empty or undefined");
-      }
-
-      // Get a random title
-      const randomTitle = seoTitles[randomIndex];
-
-      console.log(randomTitle);
+      setOptimizedTitle(JSON.parse(responseData));
     } catch (error) {
       console.error("Error posting data:", error);
       throw error; // Rethrow the error for the calling function to handle
@@ -136,6 +140,7 @@ export const PostForm = () => {
         <Input
           name="title"
           title="Startup Title"
+          ref={titleRef}
           onChange={(e) => setOptimizeTitle(e.target.value)}
           defaultValue={state.title}
           className="input-text block w-full mt-2 rounded-md border-0 h-11 px-4 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
