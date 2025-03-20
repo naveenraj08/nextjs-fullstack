@@ -87,7 +87,7 @@ export const PostForm = () => {
 
     console.log(seo_optimized_titles);
     if (title !== undefined) {
-      titleRef.current.value = seo_optimized_titles;
+      titleRef.current.value = seo_optimized_titles[0];
       setOptimizeTitle(seo_optimized_titles);
       titleRef.current?.focus();
     }
