@@ -51,7 +51,7 @@ export const PostForm = () => {
       const result = await createPitch(prevState, formData, pitch);
 
       if (result.status === "SUCCESS") {
-        router.push(`/startup/${result._id}`);
+        router.push(`/startup/${result?.slug?.current}`);
       }
 
       return result;
