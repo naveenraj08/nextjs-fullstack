@@ -26,7 +26,7 @@
     "clsx": "^2.1.1",
     "color2k": "^2.0.3",
     "easymde": "^2.18.0",
-    "framer-motion": "^12.4.7",
+    "framer-motion": "11.0.22",
     "lucide-react": "^0.475.0",
     "markdown-it": "^14.1.0",
     "next": "^15.2.1",
