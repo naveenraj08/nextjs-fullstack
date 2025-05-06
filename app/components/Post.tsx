@@ -10,13 +10,13 @@ export const Post = ({ post }: { post: StartupTypeCard }) => {
   const { image, title, _createdAt, views, author, description, slug } = post;
 
   return (
-    <li className="w-full p-4 bg-white flex flex-col items-start justify-start space-y-5 border border-gray-100 rounded-post-card duration-300 ease-in-out group">
+    <li className="w-full p-4 bg-white flex flex-col h-full items-start justify-start space-y-5 border border-gray-100 rounded-post-card duration-300 ease-in-out">
       <div className="w-full rounded-xl overflow-hidden block">
         <Link href={`/startup/${slug?.current}`} className="block ">
           <Image
             src={image}
             alt={title}
-            className="transition-all duration-300 ease-in-out group-hover:scale-105 max-h-[230px] w-full min-h-[230px] object-cover"
+            className="max-h-[230px] w-full min-h-[230px] object-cover"
             width="360"
             height="230"
           />
@@ -31,7 +31,7 @@ export const Post = ({ post }: { post: StartupTypeCard }) => {
         </p>
       </div>
 
-      <div>
+      <div className="flex-1">
         <h2 className="text-xl text-left font-semibold">
           <Link
             href={`/startup/${slug?.current}`}
@@ -40,6 +40,12 @@ export const Post = ({ post }: { post: StartupTypeCard }) => {
             {title}
           </Link>
         </h2>
+      </div>
+
+      <div className="flex gap-3 items-center justify-start w-full">
+        <button type="button">Like</button>
+        <button type="button">comment</button>
+        <button>Share</button>
       </div>
     </li>
   );

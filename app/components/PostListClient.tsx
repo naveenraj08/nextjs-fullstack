@@ -17,7 +17,7 @@ export function PostListClient({
     const [loading, setLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
 
-    async function loadMore() {
+    const loadMore = async () => {
         setLoading(true);
         const res = await fetch(
             `/api/posts?search=${query || ""}&page=${page + 1}`
@@ -30,15 +30,14 @@ export function PostListClient({
         setLoading(false);
     }
 
+
     useEffect(() => {
         async function fetchPosts() {
-            setLoading(true);
             setPage(1);
             const res = await fetch(`/api/posts?search=${query || ""}&page=1`);
             const newPosts = await res.json();
             setPosts(newPosts);
             setHasMore(newPosts.length >= PAGE_SIZE);
-            setLoading(false);
         }
 
         fetchPosts();
