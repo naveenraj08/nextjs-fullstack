@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Post, StartupTypeCard } from "./Post";
-
 
 const PAGE_SIZE = 6;
 
@@ -20,7 +19,9 @@ export function PostListClient({
 
     async function loadMore() {
         setLoading(true);
-        const res = await fetch(`/api/posts?search=${query || ""}&page=${page + 1}`);
+        const res = await fetch(
+            `/api/posts?search=${query || ""}&page=${page + 1}`
+        );
         const newPosts = await res.json();
 
         setPosts((prev) => [...prev, ...newPosts]);
@@ -28,6 +29,20 @@ export function PostListClient({
         setHasMore(newPosts.length >= PAGE_SIZE);
         setLoading(false);
     }
+
+    useEffect(() => {
+        async function fetchPosts() {
+            setLoading(true);
+            setPage(1);
+            const res = await fetch(`/api/posts?search=${query || ""}&page=1`);
+            const newPosts = await res.json();
+            setPosts(newPosts);
+            setHasMore(newPosts.length >= PAGE_SIZE);
+            setLoading(false);
+        }
+
+        fetchPosts();
+    }, [query]);
 
     return (
         <>
@@ -49,7 +64,6 @@ export function PostListClient({
                             className={`inline-flex items-center transition duration-200 ${loading ? "opacity-0" : "opacity-100"}`}
                         >
                             Load More
-
                         </span>
                         <span
                             className={`absolute flex justify-center items-center top-0 left-0 w-full h-full transition duration-200 ${loading ? "opacity-100 z-10" : "opacity-0 -z-10"}`}

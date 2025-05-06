@@ -1,9 +1,7 @@
 import Link from "next/link";
 import { SearchForm } from "@/app/components/SearchForm";
-import { Post, StartupTypeCard } from "../../components/Post";
 import { STARTUP_QUERY } from "@/sanity/lib/queries";
 import { sanityFetch } from "@/sanity/lib/live";
-import { LoadMore } from "@/app/components/LoadMore";
 import { PostListClient } from "@/app/components/PostListClient";
 
 export default async function Home({
@@ -14,7 +12,12 @@ export default async function Home({
   const query = (await searchParams).query;
   const params = { search: query || null, start: 0, end: 6 };
 
-  const { data: initialPosts } = await sanityFetch({ query: STARTUP_QUERY, params });
+  const { data: initialPosts } = await sanityFetch({
+    query: STARTUP_QUERY,
+    params,
+  });
+
+  console.log("initialPosts", initialPosts);
 
   return (
     <div className="divide-y divide-gray-100">
