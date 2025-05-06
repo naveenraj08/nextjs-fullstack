@@ -4,6 +4,7 @@ import { Post, StartupTypeCard } from "../../components/Post";
 import { STARTUP_QUERY } from "@/sanity/lib/queries";
 import { sanityFetch } from "@/sanity/lib/live";
 import { LoadMore } from "@/app/components/LoadMore";
+import { PostListClient } from "@/app/components/PostListClient";
 
 export default async function Home({
   searchParams,
@@ -11,9 +12,9 @@ export default async function Home({
   searchParams: Promise<{ query?: string }>;
 }) {
   const query = (await searchParams).query;
-  const params = { search: query || null };
+  const params = { search: query || null, start: 0, end: 6 };
 
-  const { data: posts } = await sanityFetch({ query: STARTUP_QUERY, params });
+  const { data: initialPosts } = await sanityFetch({ query: STARTUP_QUERY, params });
 
   return (
     <div className="divide-y divide-gray-100">
@@ -44,26 +45,15 @@ export default async function Home({
 
       <section className="bg-gray-50 dark:bg-gray-900">
         <div className="max-w-7xl mx-auto py-8 px-4 text-center lg:py-16 lg:px-12">
-          <p className="text-2xl text-gray-800 text-left font-semibold mb-6 pb-5">
-            {query ? `"Search results for ${query}"` : "Recommended Post"}
+          <p className="text-2xl text-left font-semibold mb-6 pb-5">
+            {query ? `Search results for "${query}"` : "Recommended Post"}
           </p>
 
-          <ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-            {posts.length > 0 ? (
-              <>
-                {posts.map((post: StartupTypeCard) => (
-                  <Post post={post} key={post?._id} />
-                ))}
-                <li className="col-span-1 md:col-span-2 xl:col-span-3 text-lg font-medium">
-                  <LoadMore />
-                </li>
-              </>
-            ) : (
-              <li className="col-span-1 md:col-span-2 xl:col-span-3 text-lg font-medium">
-                Sorry! No posts found...
-              </li>
-            )}
-          </ul>
+          {initialPosts.length > 0 ? (
+            <PostListClient initialPosts={initialPosts} query={query} />
+          ) : (
+            <p className="text-lg font-medium">Sorry! No posts found...</p>
+          )}
         </div>
       </section>
     </div>

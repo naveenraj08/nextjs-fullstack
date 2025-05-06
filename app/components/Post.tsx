@@ -40,21 +40,6 @@ export const Post = ({ post }: { post: StartupTypeCard }) => {
             {title}
           </Link>
         </h2>
-        <p className="text-sm text-gray-600 text-left mt-2 line-clamp-2">
-          {description}
-        </p>
-      </div>
-
-      <div className="text-left pt-5 flex-1 flex items-end">
-        <Link
-          href={`/user/${author?._id}`}
-          title={author?.name}
-          className="text-sm text-gray-600 inline-flex items-center"
-        >
-          <span className="w-10 h-10 flex justify-center items-center rounded-full bg-gray-200 font-medium text-gray-800">
-            {formateName(author?.name ?? "")}
-          </span>
-        </Link>
       </div>
     </li>
   );
