@@ -41,12 +41,6 @@ export const Post = ({ post }: { post: StartupTypeCard }) => {
           </Link>
         </h2>
       </div>
-
-      <div className="flex gap-3 items-center justify-start w-full">
-        <button type="button">Like</button>
-        <button type="button">comment</button>
-        <button>Share</button>
-      </div>
     </li>
   );
 };
