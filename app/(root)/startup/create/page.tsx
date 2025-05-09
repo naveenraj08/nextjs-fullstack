@@ -3,6 +3,7 @@ import { PostForm } from "@/app/components/PostForm";
 import { auth } from "@/auth";
 import React from "react";
 import { Metadata } from "next";
+import UserResgistration from "@/app/components/UserResgistration";
 
 export const metadata: Metadata = {
   title: "Create a New Post",
@@ -26,7 +27,7 @@ const page = async () => {
   const session = await auth();
 
   if (!session) {
-    return <AlertLogin />;
+    return <UserResgistration />;
   }
 
   return <PostForm />;
