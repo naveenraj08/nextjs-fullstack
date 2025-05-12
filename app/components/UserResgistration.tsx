@@ -1,51 +1,45 @@
+import { signIn } from "@/auth";
 import { Input } from "@/components/ui/input";
 import React from 'react'
 
 const UserResgistration = () => {
     return (
-        <div className="flex bg-white max-w-md mx-auto">
+        <div className="flex bg-white max-w-md rounded-md mx-auto">
             <div className="flex flex-1 flex-col justify-center p-5 lg:p-10 lg:flex-none w-full">
                 <div className="mx-auto w-full">
-                    <div className="mt-10">
+                    <div className="mt-5">
+                        <h1 className="mb-5 font-semibold text-lg">Sign In</h1>
                         <div>
                             <form action="#" method="POST" className="space-y-6">
                                 <div>
                                     <label
-                                        htmlFor="title"
+                                        htmlFor="username"
                                         className="post-form-title font-medium text-xs text-gray-500"
                                     >
-                                        Title
+                                        Email
                                     </label>
                                     <Input
-                                        name="title"
-                                        title="Startup Title"
+                                        name="username"
+                                        title="Username"
                                         className="input-text block w-full mt-2 rounded-md border-0 h-11 px-4 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
-                                        id="title"
+                                        id="username"
                                     />
                                 </div>
 
                                 <div>
-                                    <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">Password</label>
-                                    <div className="mt-2">
-                                        <Input
-                                            type="password"
-                                            name="password"
-                                            title="Category"
-                                            className="input-text block w-full mt-2 rounded-md border-0 h-11 px-4 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
-                                            id="category"
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className="flex items-center justify-between">
-                                    <div className="flex items-center">
-                                        <input id="remember-me" name="remember-me" type="checkbox" className="h-4 w-4 rounded border-gray-300 text-[#EA4335] focus:ring-black" />
-                                        <label htmlFor="remember-me" className="ml-3 block text-sm leading-6 text-gray-700">Remember me</label>
-                                    </div>
-
-                                    <div className="text-sm leading-6">
-                                        <a href="#" className="font-semibold text-[#EA4335] hover:text-[#ea44358e]">Forgot password?</a>
-                                    </div>
+                                    <label
+                                        htmlFor="password"
+                                        className="user-form-password font-medium text-xs text-gray-500"
+                                    >
+                                        Password
+                                    </label>
+                                    <Input
+                                        type="password"
+                                        name="password"
+                                        title="password"
+                                        className="input-text block w-full mt-2 rounded-md border-0 h-11 px-4 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
+                                        id="password"
+                                    />
                                 </div>
 
                                 <div>
@@ -64,20 +58,79 @@ const UserResgistration = () => {
                                 </div>
                             </div>
 
-                            <div className="mt-6 grid grid-cols-2 gap-4">
-                                <a href="#" className="flex w-full items-center justify-center gap-3 rounded-md bg-[#1D9BF0] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1D9BF0]">
-                                    <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                                        <path d="M6.29 18.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0020 3.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.073 4.073 0 01.8 7.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 010 16.407a11.616 11.616 0 006.29 1.84" />
-                                    </svg>
-                                    <span className="text-sm font-semibold leading-6">Twitter</span>
-                                </a>
+                            <div className="mt-6 flex justify-center items-center gap-4">
+                                <form
+                                    action={async () => {
+                                        "use server";
+                                        await signIn("github");
+                                    }}
+                                >
+                                    <button
+                                        type="submit"
+                                        className="relative rounded-full p-2 inline-flex justify-start items-center text-sm gap-2 text-gray-600 focus:outline-none hover:bg-gray-100 focus:bg-gray-100 focus:ring-2 focus:ring-gray-400"
+                                        title="Login with Github"
+                                    >
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            version="1.1"
+                                            xmlnsXlink="http://www.w3.org/1999/xlink"
+                                            width="24"
+                                            height="24"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <g>
+                                                <path
+                                                    d="M12 .5C5.37.5 0 5.78 0 12.292c0 5.211 3.438 9.63 8.205 11.188.6.111.82-.254.82-.567 0-.28-.01-1.022-.015-2.005-3.338.711-4.042-1.582-4.042-1.582-.546-1.361-1.335-1.725-1.335-1.725-1.087-.731.084-.716.084-.716 1.205.082 1.838 1.215 1.838 1.215 1.07 1.803 2.809 1.282 3.495.981.108-.763.417-1.282.76-1.577-2.665-.295-5.466-1.309-5.466-5.827 0-1.287.465-2.339 1.235-3.164-.135-.298-.54-1.497.105-3.121 0 0 1.005-.316 3.3 1.209.96-.262 1.98-.392 3-.398 1.02.006 2.04.136 3 .398 2.28-1.525 3.285-1.209 3.285-1.209.645 1.624.24 2.823.12 3.121.765.825 1.23 1.877 1.23 3.164 0 4.53-2.805 5.527-5.475 5.817.42.354.81 1.077.81 2.182 0 1.578-.015 2.846-.015 3.229 0 .309.21.678.825.56C20.565 21.917 24 17.495 24 12.292 24 5.78 18.627.5 12 .5z"
+                                                    fill="#000000"
+                                                ></path>
+                                            </g>
+                                        </svg>
+                                        <span>Github</span>
+                                    </button>
+                                </form>
 
-                                <a href="#" className="flex w-full items-center justify-center gap-3 rounded-md bg-[#24292F] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F]">
-                                    <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                                        <path fillRule="evenodd" d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z" clipRule="evenodd" />
-                                    </svg>
-                                    <span className="text-sm font-semibold leading-6">GitHub</span>
-                                </a>
+
+                                <form
+                                    action={async () => {
+                                        "use server";
+                                        await signIn("google");
+                                    }}
+                                >
+                                    <button
+                                        type="submit"
+                                        className="relative rounded-full p-2 inline-flex justify-start items-center text-sm gap-2 text-gray-600 focus:outline-none hover:bg-gray-100 focus:bg-gray-100 focus:ring-2 focus:ring-gray-400"
+                                        title="Login with Google"
+                                    >
+                                        <svg
+                                            version="1.1"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 48 48"
+                                            width="24"
+                                            height="24"
+                                        >
+                                            <g>
+                                                <path
+                                                    fill="#EA4335"
+                                                    d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"
+                                                ></path>
+                                                <path
+                                                    fill="#4285F4"
+                                                    d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"
+                                                ></path>
+                                                <path
+                                                    fill="#FBBC05"
+                                                    d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"
+                                                ></path>
+                                                <path
+                                                    fill="#34A853"
+                                                    d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"
+                                                ></path>
+                                                <path fill="none" d="M0 0h48v48H0z"></path>
+                                            </g>
+                                        </svg>
+                                        <span>Google</span>
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>
