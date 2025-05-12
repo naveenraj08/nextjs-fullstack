@@ -95,11 +95,12 @@ export const PostForm = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch("/api/generate", {
-        // Replace with your actual route
-        method: "POST",
-        body: JSON.stringify(optimizeTitle),
-      });
+      const response =
+        await fetch(`/api/generate`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'seotitle', content: optimizeTitle }),
+        });
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -275,7 +276,7 @@ export const PostForm = () => {
         )}
       </div>
 
-      {}
+      { }
 
       <div className="text-center py-5">
         <button

@@ -58,6 +58,22 @@ export const createPitch = async (
 
   const slug = slugify(title, { lower: true, strict: true });
   try {
+
+    const response =
+      await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/generate`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'shorturl', content: slug }),
+      });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const responseData = await response.json();
+    const shortendSlug = JSON.parse(responseData);
+
+
     const startup = {
       title,
       description: formData.description,
@@ -65,7 +81,7 @@ export const createPitch = async (
       image: uploadedImage.url,
       slug: {
         _type: "slug",
-        current: slug,
+        current: shortendSlug[0],
       },
       author: {
         _type: "reference",
