@@ -46,7 +46,6 @@ export async function generateMetadata({
 const Page = async ({ params }: { params: { slug: string } }) => {
   const { slug } = await params;
 
-  console.log("id", slug);
   const post = await client.fetch(STARTUP_QUERY_BY_SLUG, { slug });
 
   if (!post) return notFound();

@@ -16,9 +16,6 @@ export default async function Home({
     query: STARTUP_QUERY,
     params,
   });
-
-  console.log("initialPosts", initialPosts);
-
   return (
     <div className="divide-y divide-gray-100">
       <section className="bg-white">
