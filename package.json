@@ -7,8 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "typegen": "sanity schema extract --path=./sanity/extract.json && sanity typegen generate",
-    "postinstall": "rm -rf node_modules package-lock.json && npm install"
+    "typegen": "sanity schema extract --path=./sanity/extract.json && sanity typegen generate"
   },
   "packageManager": "npm@10.5.2",
   "overrides": {
@@ -53,6 +52,7 @@
     "eslint": "^9",
     "eslint-config-next": "15.1.2",
     "postcss": "^8",
+    "rollup": "^4.45.0",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
   }
