@@ -3,7 +3,7 @@
 import { auth } from "@/auth";
 import slugify from "slugify";
 import { writeClient } from "@/sanity/lib/write-client";
-import { parseServerActionResponse } from "./utils";
+import { parseServerActionResponse, shortenSlug } from "./utils";
 import { client } from "@/sanity/lib/client";
 
 export const createPitch = async (
@@ -57,23 +57,9 @@ export const createPitch = async (
     });
 
   const slug = slugify(title, { lower: true, strict: true });
+  const shortenedSlug = shortenSlug(slug, 50);;
+
   try {
-
-    const response =
-      await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/generate`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'shorturl', content: slug }),
-      });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const responseData = await response.json();
-    const shortendSlug = JSON.parse(responseData);
-
-
     const startup = {
       title,
       description: formData.description,
@@ -81,7 +67,7 @@ export const createPitch = async (
       image: uploadedImage.url,
       slug: {
         _type: "slug",
-        current: shortendSlug[0],
+        current: shortenedSlug,
       },
       author: {
         _type: "reference",
@@ -89,7 +75,6 @@ export const createPitch = async (
       },
       pitch,
     };
-
     const result = await writeClient.create({ _type: "startup", ...startup });
 
     return parseServerActionResponse({
@@ -98,8 +83,6 @@ export const createPitch = async (
       status: "SUCCESS",
     });
   } catch (error) {
-    console.log(error);
-
     return parseServerActionResponse({
       error: JSON.stringify(error),
       status: "ERROR",

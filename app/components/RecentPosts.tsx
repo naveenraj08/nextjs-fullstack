@@ -22,7 +22,7 @@ export const RecentPosts = ({ post }: { post: Post }) => {
       >
         <span>
           <Image
-            src={image}
+            src={image ? image : "/post-placeholder.png"}
             alt={title}
             className="w-12 h-12 rounded-md max-w-[48px] max-h-[48px] object-cover object-center"
             width="40"

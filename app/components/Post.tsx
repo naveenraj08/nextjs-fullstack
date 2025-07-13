@@ -14,7 +14,7 @@ export const Post = ({ post }: { post: StartupTypeCard }) => {
       <div className="w-full rounded-xl overflow-hidden block">
         <Link href={`/startup/${slug?.current}`} className="block ">
           <Image
-            src={image}
+            src={image ? image : "/post-placeholder.png"}
             alt={title}
             className="max-h-[230px] w-full min-h-[230px] object-cover"
             width="360"

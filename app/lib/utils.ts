@@ -25,3 +25,19 @@ export function formateName(name: string): string {
 export function parseServerActionResponse<T>(response: T) {
     return JSON.parse(JSON.stringify(response))
 }
+
+
+// Shortened URL generation
+export function shortenSlug(slug: string, maxLength = 50) {
+    if (slug.length <= maxLength) return slug;
+
+    const words = slug.split("-");
+    let shortened = "";
+
+    for (const word of words) {
+        if ((shortened + word).length + (shortened ? 1 : 0) > maxLength) break;
+        shortened += (shortened ? "-" : "") + word;
+    }
+
+    return shortened;
+}
