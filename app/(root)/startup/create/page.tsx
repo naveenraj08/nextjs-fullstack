@@ -1,9 +1,9 @@
 import { AlertLogin } from "@/app/components/AlertLogin";
-import { PostForm } from "@/app/components/PostForm";
 import { auth } from "@/auth";
 import React from "react";
 import { Metadata } from "next";
 import UserResgistration from "@/app/components/UserResgistration";
+import { AskAiForm } from "@/app/components/AskAiForm";
 
 export const metadata: Metadata = {
   title: "Create a New Post",
@@ -30,7 +30,11 @@ const page = async () => {
     return <UserResgistration />;
   }
 
-  return <PostForm />;
+  return (
+    <div className="space-y-10 min-h-[calc(100vh-110px)] flex flex-col items-center justify-center">
+      <AskAiForm />
+    </div>
+  );
 };
 
 export default page;

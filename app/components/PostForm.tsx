@@ -13,10 +13,15 @@ import Image from "next/image";
 
 type OptimizedTitleType = { seo_optimized_title: string[] }[];
 
-export const PostForm = () => {
+export const PostForm = ({ userRequest, showPlaceholder }: { userRequest: string }) => {
   const [pitch, setPitch] = useState("");
   const [optimizeTitle, setOptimizeTitle] = useState("");
   const [optimizedTitle, setOptimizedTitle] = useState<OptimizedTitleType>([]);
+
+  const [postData, setPostData] = useState<any>({});
+
+  const [showForm, setShowForm] = useState<boolean>(false);
+
   const [errors, setErrors] = useState({});
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
@@ -78,38 +83,46 @@ export const PostForm = () => {
   };
 
   useEffect(() => {
-    const postTitle = optimizedTitle[0]?.seo_optimized_title || optimizedTitle[0]?.title || optimizedTitle[0]?.seo_title;
+    if (userRequest) {
 
-    if (postTitle) {
+      fetchData(userRequest);
+    }
+  }, [userRequest]);
+
+  useEffect(() => {
+
+    if (postData !== null) {
+      const { title, metaDescription, tags, media, content } = postData;
+
       if (titleRef.current) {
         let index = 0;
         const typingSpeed = 10;
         titleRef.current.value = '';
 
         const typeChar = () => {
-          if (index < postTitle.length) {
+          if (index < title.length) {
             if (titleRef.current) {
-              titleRef.current.value += postTitle.charAt(index);
+              titleRef.current.value += title.charAt(index);
             }
             index++;
             setTimeout(typeChar, typingSpeed);
           } else {
-            setOptimizeTitle(postTitle); // set only after typing is complete
+            setOptimizeTitle(title); // set only after typing is complete
           }
         };
 
         typeChar();
       }
     }
-  }, [optimizedTitle]);
+  }, [postData]);
 
-  const fetchData = async () => {
+  const fetchData = async (userRequestTitle: string) => {
     try {
       const response =
         await fetch(`/api/generate`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ action: 'seotitle', content: optimizeTitle }),
+          body: JSON.stringify({ action: 'seotitle', content: userRequestTitle }),
         });
 
       if (!response.ok) {
@@ -117,7 +130,11 @@ export const PostForm = () => {
       }
 
       const responseData = await response.json();
-      setOptimizedTitle(JSON.parse(responseData));
+      const parsedData = JSON.parse(responseData);
+      console.log("Parsed Data:", parsedData);
+      setShowForm(true);
+      showPlaceholder(false);
+      setPostData(parsedData);
     } catch (error) {
       console.error("Error posting data:", error);
       throw error; // Rethrow the error for the calling function to handle
@@ -132,36 +149,35 @@ export const PostForm = () => {
     error: "",
     status: "INITIAL",
   });
-
-  return (
-    <form
-      action={formAction}
-      className="post-form space-y-5 mx-auto max-w-xl px-2 sm:px-6 py-5 lg:px-8 bg-white rounded-md border border-gray-100"
-    >
-      <h1 className="my-5 text-center text-xl font-semibold text-gray-900">
-        Create Post
-      </h1>
-      <div>
-        <label
-          htmlFor="title"
-          className="post-form-title font-medium text-xs text-gray-500"
-        >
-          Title
-        </label>
-        <div className="flex items-center justify-start gap-5">
-          <Input
-            name="title"
-            title="Startup Title"
-            ref={titleRef}
-            onChange={(e) => setOptimizeTitle(e.target.value)}
-            defaultValue={state.title}
-            className="input-text block w-full mt-2 rounded-md border-0 h-11 px-4 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
-            id="title"
-          />
-          <button
+  if (showForm === true) {
+    return (
+      <form
+        action={formAction}
+        className="post-form space-y-5 px-2 sm:px-6 py-5 lg:px-8 bg-white rounded-md border border-gray-100"
+      >
+        <h1 className="my-5 text-center text-xl font-semibold text-gray-900">
+          Create Post
+        </h1>
+        <div>
+          <label
+            htmlFor="title"
+            className="post-form-title font-medium text-xs text-gray-500"
+          >
+            Title
+          </label>
+          <div className="flex items-center justify-start gap-5">
+            <Input
+              name="title"
+              title="Startup Title"
+              ref={titleRef}
+              defaultValue={state.title}
+              className="input-text block w-full mt-2 rounded-md border-0 h-11 px-4 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
+              id="title"
+            />
+            {/* <button
             type="button"
             className="text-xs mt-2 pl-2 pr-4 inline-flex items-center justify-start text-primary p-2 transition hover:bg-gray-100 rounded-md focus:ring-2 gap-2 focus:ring-offset-0 focus:ring-primary"
-            onClick={fetchData}
+            onClick={}
             title="Fine tune your title"
           >
             <span>
@@ -182,132 +198,133 @@ export const PostForm = () => {
                 ></path>
               </svg>
             </span>
-          </button>
-          {errors.title && (
+          </button> */}
+            {errors.title && (
+              <p className="mt-2 text-red-600 inline-block rounded-md text-xs">
+                {errors.title}
+              </p>
+            )}
+          </div>
+        </div>
+        <div>
+          <label
+            htmlFor="description"
+            className="post-form-title font-medium text-xs text-gray-500"
+          >
+            Description
+          </label>
+          <Textarea
+            name="description"
+            title="Startup Description"
+            defaultValue={state.description}
+            className="input-text block w-full mt-2 rounded-md border-0  h-11 px-4 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
+            id="description"
+          />
+
+          {errors.description && (
             <p className="mt-2 text-red-600 inline-block rounded-md text-xs">
-              {errors.title}
+              {errors.description}
             </p>
           )}
         </div>
-      </div>
-      <div>
-        <label
-          htmlFor="description"
-          className="post-form-title font-medium text-xs text-gray-500"
-        >
-          Description
-        </label>
-        <Textarea
-          name="description"
-          title="Startup Description"
-          defaultValue={state.description}
-          className="input-text block w-full mt-2 rounded-md border-0  h-11 px-4 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
-          id="description"
-        />
 
-        {errors.description && (
-          <p className="mt-2 text-red-600 inline-block rounded-md text-xs">
-            {errors.description}
-          </p>
-        )}
-      </div>
-
-      <div>
-        <label
-          htmlFor="category"
-          className="post-form-title font-medium text-xs text-gray-500"
-        >
-          Category
-        </label>
-        <Input
-          name="category"
-          title="Category"
-          defaultValue={state.category}
-          className="input-text block w-full mt-2 rounded-md border-0  h-11 px-4 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
-          id="category"
-        />
-
-        {errors.category && (
-          <p className="mt-2 text-red-600 inline-block rounded-md text-xs">
-            {errors.category}
-          </p>
-        )}
-      </div>
-      <div>
-        <label
-          htmlFor="image"
-          className="post-form-title font-medium text-xs text-gray-500"
-        >
-          Upload image
-        </label>
-        <Input
-          type="file"
-          onChange={handleFileChange}
-          accept="image/*"
-          name="image"
-          defaultValue={state.image}
-          id="image"
-          className="input-text block w-full mt-2 rounded-md border-0  h-11 px-4 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
-        />
-        {errors.image && (
-          <p className="mt-2 text-red-600 inline-block rounded-md text-xs">
-            {errors.image}
-          </p>
-        )}
-        {preview && (
-          <Image
-            src={preview}
-            alt={`Preview`}
-            className="mt-5 rounded-md"
-            width={510}
-            height={120}
+        <div>
+          <label
+            htmlFor="category"
+            className="post-form-title font-medium text-xs text-gray-500"
+          >
+            Category
+          </label>
+          <Input
+            name="category"
+            title="Category"
+            defaultValue={state.category}
+            className="input-text block w-full mt-2 rounded-md border-0  h-11 px-4 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
+            id="category"
           />
-        )}
-      </div>
-      <div>
-        <label
-          htmlFor="message"
-          className="post-form-title font-medium text-xs text-gray-500"
-        >
-          Message
-        </label>
-        <MDEditor
-          value={pitch}
-          height="200px"
-          preview="edit"
-          className="mt-2"
-          id="message"
-          onChange={(value) => setPitch(value ?? "")}
-        />
 
-        {errors.pitch && (
-          <p className="mt-2 text-red-600 inline-block rounded-md text-xs">
-            {errors.pitch}
-          </p>
-        )}
-      </div>
-
-      { }
-
-      <div className="text-center py-5">
-        <button
-          type="submit"
-          disabled={isPending}
-          className="relative rounded-lg bg-black text-white h-11 px-10 py-2 text-sm font-medium focus:ring-2 focus:ring-offset-2 focus:ring-black"
-        >
-          <span
-            className={`inline-flex items-center transition duration-200 ${isPending ? "opacity-0" : "opacity-100"}`}
+          {errors.category && (
+            <p className="mt-2 text-red-600 inline-block rounded-md text-xs">
+              {errors.category}
+            </p>
+          )}
+        </div>
+        <div>
+          <label
+            htmlFor="image"
+            className="post-form-title font-medium text-xs text-gray-500"
           >
-            Create
-            <Send className="size-4 ml-2" />
-          </span>
-          <span
-            className={`absolute flex justify-center items-center top-0 left-0 w-full h-full transition duration-200 ${isPending ? "opacity-100 z-10" : "opacity-0 -z-10"}`}
+            Upload image
+          </label>
+          <Input
+            type="file"
+            onChange={handleFileChange}
+            accept="image/*"
+            name="image"
+            defaultValue={state.image}
+            id="image"
+            className="input-text block w-full mt-2 rounded-md border-0  h-11 px-4 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
+          />
+          {errors.image && (
+            <p className="mt-2 text-red-600 inline-block rounded-md text-xs">
+              {errors.image}
+            </p>
+          )}
+          {preview && (
+            <Image
+              src={preview}
+              alt={`Preview`}
+              className="mt-5 rounded-md"
+              width={510}
+              height={120}
+            />
+          )}
+        </div>
+        <div>
+          <label
+            htmlFor="message"
+            className="post-form-title font-medium text-xs text-gray-500"
           >
-            <span className="w-6 h-6 inline-block border-2 border-white border-r-transparent rounded-full animate-spin"></span>
-          </span>
-        </button>
-      </div>
-    </form>
-  );
+            Message
+          </label>
+          <MDEditor
+            value={pitch}
+            height="200px"
+            preview="edit"
+            className="mt-2"
+            id="message"
+            onChange={(value) => setPitch(value ?? "")}
+          />
+
+          {errors.pitch && (
+            <p className="mt-2 text-red-600 inline-block rounded-md text-xs">
+              {errors.pitch}
+            </p>
+          )}
+        </div>
+
+        { }
+
+        <div className="text-center py-5">
+          <button
+            type="submit"
+            disabled={isPending}
+            className="relative rounded-lg bg-black text-white h-11 px-10 py-2 text-sm font-medium focus:ring-2 focus:ring-offset-2 focus:ring-black"
+          >
+            <span
+              className={`inline-flex items-center transition duration-200 ${isPending ? "opacity-0" : "opacity-100"}`}
+            >
+              Create
+              <Send className="size-4 ml-2" />
+            </span>
+            <span
+              className={`absolute flex justify-center items-center top-0 left-0 w-full h-full transition duration-200 ${isPending ? "opacity-100 z-10" : "opacity-0 -z-10"}`}
+            >
+              <span className="w-6 h-6 inline-block border-2 border-white border-r-transparent rounded-full animate-spin"></span>
+            </span>
+          </button>
+        </div>
+      </ form>
+    );
+  }
 };

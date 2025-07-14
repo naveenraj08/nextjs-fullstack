@@ -6,7 +6,6 @@ export async function POST(req: NextRequest) {
   const action = body.action;
 
 
-
   if (!body) {
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   }
@@ -15,13 +14,37 @@ export async function POST(req: NextRequest) {
     case 'seotitle': {
       const result = await chatSession.sendMessage(
         `
-        You are given some post content or metadata. It may be a string, an object, or an array. Your task is:
-        1. Extract the best possible title or heading.
-        2. Optimize it for SEO.
-        3. Generate 1 catchy title for a blog post.
+        You are a professional blog content generator.
+
+        Your task is to generate a full SEO-optimized blog post based on the given topic, keyword, or content snippet. Your response must strictly follow this JSON structure:
+
+        {
+          "title": "",                // SEO-optimized, catchy blog post title
+          "metaDescription": "",      // Concise, engaging summary (150–160 characters)
+          "tags": [],                 // Array of 5–8 relevant tags or keywords
+          "media": {
+            "type": "prompt",         // Always return a prompt (not a URL)
+            "value": ""               // Generate an AI image prompt based on the blog title (visually descriptive)
+          },
+          "content": ""               // Full blog post content (600–1200 words), in markdown format
+        }
 
         Input:
         ${body.content}
+
+        Instructions:
+        - The 'title' must be keyword-rich and attention-grabbing.
+        - The 'metaDescription' should clearly describe the blog and boost click-through rates.
+        - 'tags' should be relevant keywords that improve discoverability.
+        - For 'media', generate a visual **prompt** based on the title — make it creative and descriptive, Example: “Futuristic developer working on a website with holographic UI panels and code”.
+        - The 'content' must include:
+          - A powerful introduction
+          - Multiple sections with markdown headings (###)
+          - Practical examples or insights
+          - A conclusion with a strong call-to-action (CTA)
+        - Tone: informative and engaging.
+
+        ⚠️ Return **only the JSON object**, no extra text.
         `
       );
       return NextResponse.json(result.response.text(), { status: 200 });
