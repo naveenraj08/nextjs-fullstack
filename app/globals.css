@@ -73,7 +73,6 @@ body {
   }
 }
 
-
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -84,13 +83,12 @@ body {
   }
 }
 
-
 .wmde-markdown {
   table {
     @apply max-w-full overflow-x-auto;
 
     td {
-      @apply min-w-[200px]
+      @apply min-w-[200px];
     }
   }
 
@@ -101,4 +99,13 @@ body {
   ol {
     @apply pl-5 list-decimal;
   }
+}
+
+.w-md-editor .w-md-editor-toolbar li > button {
+  height: auto;
+  line-height: 20px;
+}
+
+.w-md-editor .w-md-editor-toolbar li > button svg {
+  @apply w-5 h-5;
 }
