@@ -21,10 +21,10 @@ export async function POST(req: NextRequest) {
         {
           "title": "",                // SEO-optimized, catchy blog post title
           "metaDescription": "",      // Concise, engaging summary (150–160 characters)
-          "tags": [],                 // Array of 5–8 relevant tags or keywords
+          "tags": "",                 // 1 relevant tag or keyword
           "media": {
-            "type": "prompt",         // Always return a prompt (not a URL)
-            "value": ""               // Generate an AI image prompt based on the blog title (visually descriptive)
+            "type": "url",            // Always return a image URL (not a prompt )
+            "value": ""               // Generate an AI image URL based on the blog title (visually descriptive)
           },
           "content": ""               // Full blog post content (600–1200 words), in markdown format
         }
@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
         - The 'title' must be keyword-rich and attention-grabbing.
         - The 'metaDescription' should clearly describe the blog and boost click-through rates.
         - 'tags' should be relevant keywords that improve discoverability.
-        - For 'media', generate a visual **prompt** based on the title — make it creative and descriptive, Example: “Futuristic developer working on a website with holographic UI panels and code”.
+        - For 'media', generate a AI Image based on the title — make it creative and descriptive.
         - The 'content' must include:
           - A powerful introduction
           - Multiple sections with markdown headings (###)
