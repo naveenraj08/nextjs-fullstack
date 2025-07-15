@@ -11,7 +11,12 @@ import { createPitch } from "../lib/actions";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
-type OptimizedTitleType = { seo_optimized_title: string[] }[];
+type TypeTextOptions = {
+  ref?: React.RefObject<HTMLInputElement | HTMLTextAreaElement>;
+  setState?: React.Dispatch<React.SetStateAction<string>>;
+  speed?: number;
+};
+
 
 export const PostForm = ({ userRequest, showPlaceholder }: { userRequest: string }) => {
   const [pitch, setPitch] = useState("");
@@ -30,6 +35,8 @@ export const PostForm = ({ userRequest, showPlaceholder }: { userRequest: string
   const router = useRouter();
 
   const titleRef = useRef<HTMLInputElement>(null);
+  const descriptionRef = useRef<HTMLTextAreaElement>(null);
+  const taglineRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -93,28 +100,50 @@ export const PostForm = ({ userRequest, showPlaceholder }: { userRequest: string
 
     if (postData !== null) {
       const { title, metaDescription, tags, media, content } = postData;
+      if (titleRef.current && descriptionRef.current && taglineRef.current) {
 
-      if (titleRef.current) {
-        let index = 0;
-        const typingSpeed = 10;
-        titleRef.current.value = '';
-
-        const typeChar = () => {
-          if (index < title.length) {
-            if (titleRef.current) {
-              titleRef.current.value += title.charAt(index);
-            }
-            index++;
-            setTimeout(typeChar, typingSpeed);
-          } else {
-            setOptimizeTitle(title); // set only after typing is complete
-          }
-        };
-
-        typeChar();
+        (async () => {
+          await typeText(title, { ref: titleRef, speed: 500 });
+          await typeText(metaDescription, { ref: descriptionRef, speed: 1000 });
+          await typeText(tags, { ref: taglineRef, speed: 1000 });
+          await typeText(content, { setState: setPitch, speed: 6000 });
+        })();
       }
     }
   }, [postData]);
+
+
+  const typeText = (
+    text: string,
+    { ref = null, setState = null, duration = 3000 }: TypeTextOptions = {}
+  ): Promise<void> => {
+    return new Promise((resolve) => {
+      const totalChars = text.length;
+      const startTime = performance.now();
+
+      if (setState) setState('');
+      if (ref?.current) ref.current.value = '';
+
+      const type = (now: number) => {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const charsToShow = Math.floor(totalChars * progress);
+
+        const currentText = text.slice(0, charsToShow);
+
+        if (setState) setState(currentText);
+        if (ref?.current) ref.current.value = currentText;
+
+        if (progress < 1) {
+          requestAnimationFrame(type);
+        } else {
+          resolve();
+        }
+      };
+
+      requestAnimationFrame(type);
+    });
+  };
 
   const fetchData = async (userRequestTitle: string) => {
     try {
@@ -130,8 +159,11 @@ export const PostForm = ({ userRequest, showPlaceholder }: { userRequest: string
       }
 
       const responseData = await response.json();
+
       const parsedData = JSON.parse(responseData);
       console.log("Parsed Data:", parsedData);
+      console.log("Response Data:", responseData);
+
       setShowForm(true);
       showPlaceholder(false);
       setPostData(parsedData);
@@ -153,7 +185,7 @@ export const PostForm = ({ userRequest, showPlaceholder }: { userRequest: string
     return (
       <form
         action={formAction}
-        className="post-form space-y-5 px-2 sm:px-6 py-5 lg:px-8 bg-white rounded-md border border-gray-100"
+        className="post-form w-full space-y-5 px-2 sm:px-6 py-5 lg:px-8 bg-white rounded-md border border-gray-100"
       >
         <h1 className="my-5 text-center text-xl font-semibold text-gray-900">
           Create Post
@@ -174,31 +206,6 @@ export const PostForm = ({ userRequest, showPlaceholder }: { userRequest: string
               className="input-text block w-full mt-2 rounded-md border-0 h-11 px-4 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
               id="title"
             />
-            {/* <button
-            type="button"
-            className="text-xs mt-2 pl-2 pr-4 inline-flex items-center justify-start text-primary p-2 transition hover:bg-gray-100 rounded-md focus:ring-2 gap-2 focus:ring-offset-0 focus:ring-primary"
-            onClick={}
-            title="Fine tune your title"
-          >
-            <span>
-              <svg
-                stroke="#DFB722"
-                fill="#DFB722"
-                strokeWidth="1"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-                height="24"
-                width="24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z"
-                ></path>
-              </svg>
-            </span>
-          </button> */}
             {errors.title && (
               <p className="mt-2 text-red-600 inline-block rounded-md text-xs">
                 {errors.title}
@@ -216,6 +223,7 @@ export const PostForm = ({ userRequest, showPlaceholder }: { userRequest: string
           <Textarea
             name="description"
             title="Startup Description"
+            ref={descriptionRef}
             defaultValue={state.description}
             className="input-text block w-full mt-2 rounded-md border-0  h-11 px-4 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
             id="description"
@@ -238,6 +246,7 @@ export const PostForm = ({ userRequest, showPlaceholder }: { userRequest: string
           <Input
             name="category"
             title="Category"
+            ref={taglineRef}
             defaultValue={state.category}
             className="input-text block w-full mt-2 rounded-md border-0  h-11 px-4 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
             id="category"
