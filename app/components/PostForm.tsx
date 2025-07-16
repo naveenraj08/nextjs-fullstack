@@ -145,33 +145,68 @@ export const PostForm = ({ userRequest, showPlaceholder }: { userRequest: string
     });
   };
 
-  const fetchData = async (userRequestTitle: string) => {
+  async function fetchData(userRequestTitle: string) {
     try {
-      const response =
-        await fetch(`/api/generate`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ action: 'seotitle', content: userRequestTitle }),
-        });
+      // 1. Generate the SEO Title
+      const titleRes = await fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'title', content: userRequestTitle }),
+      });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      if (!titleRes.ok) {
+        throw new Error(`HTTP error! status: ${titleRes.status}`);
       }
 
-      const responseData = await response.json();
+      const titleData = await titleRes.json();
+      const generatedTitle = titleData.title;
 
-      const parsedData = JSON.parse(responseData);
-      console.log("Parsed Data:", parsedData);
-      console.log("Response Data:", responseData);
 
-      setShowForm(true);
-      showPlaceholder(false);
-      setPostData(parsedData);
+      // 2. Generate Meta Description using the generated title
+      const metaDescRes = await fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'metaDescription', content: generatedTitle }),
+      });
+
+      const metaDescription = await metaDescRes.json();
+
+      // 3. Generate Meta Tags
+      const metaTagsRes = await fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'metaTags', content: generatedTitle }),
+      });
+      const metaTags = await metaTagsRes.json();
+
+      // 4. Generate Media URL
+      // const mediaRes = await fetch('/api/generate', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({ action: 'media', content: generatedTitle }),
+      // });
+      // const media = await mediaRes.json();
+
+      // 5. Generate Full Blog Content
+      const contentRes = await fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'content', content: generatedTitle }),
+      });
+      const content = await contentRes.json();
+
+      // 6. Return combined result
+      console.log('Generated title:', titleData.title);
+      console.log('Generated metaDescription:', metaDescription.metaDescription);
+      console.log('Generated metaTags:', metaTags.metaTags);
+      console.log('Generated content:', content);
     } catch (error) {
-      console.error("Error posting data:", error);
-      throw error; // Rethrow the error for the calling function to handle
+      console.error('Error generating blog content:', error);
+      throw error;
     }
-  };
+  }
+
+
 
   const [state, formAction, isPending] = useActionState(handleFormSubmit, {
     title: "",
