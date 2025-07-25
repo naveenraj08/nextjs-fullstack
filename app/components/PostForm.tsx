@@ -10,6 +10,7 @@ import { z } from "zod";
 import { createPitch } from "../lib/actions";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { title } from "process";
 
 type TypeTextOptions = {
   ref?: React.RefObject<HTMLInputElement | HTMLTextAreaElement>;
@@ -20,9 +21,6 @@ type TypeTextOptions = {
 
 export const PostForm = ({ userRequest, showPlaceholder }: { userRequest: string }) => {
   const [pitch, setPitch] = useState("");
-  const [optimizeTitle, setOptimizeTitle] = useState("");
-  const [optimizedTitle, setOptimizedTitle] = useState<OptimizedTitleType>([]);
-
   const [postData, setPostData] = useState<any>({});
 
   const [showForm, setShowForm] = useState<boolean>(false);
@@ -37,6 +35,7 @@ export const PostForm = ({ userRequest, showPlaceholder }: { userRequest: string
   const titleRef = useRef<HTMLInputElement>(null);
   const descriptionRef = useRef<HTMLTextAreaElement>(null);
   const taglineRef = useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -99,14 +98,14 @@ export const PostForm = ({ userRequest, showPlaceholder }: { userRequest: string
   useEffect(() => {
 
     if (postData !== null) {
-      const { title, metaDescription, tags, media, content } = postData;
+      const { title, description, tags, media, content } = postData;
       if (titleRef.current && descriptionRef.current && taglineRef.current) {
 
         (async () => {
-          await typeText(title, { ref: titleRef, speed: 500 });
-          await typeText(metaDescription, { ref: descriptionRef, speed: 1000 });
-          await typeText(tags, { ref: taglineRef, speed: 1000 });
-          await typeText(content, { setState: setPitch, speed: 6000 });
+          await typeText(title, { ref: titleRef, speed: 1200 });
+          await typeText(description, { ref: descriptionRef, speed: 1000 });
+          await typeText(tags, { ref: taglineRef, speed: 800 });
+          await typeText(content, { setState: setPitch, speed: 4000 });
         })();
       }
     }
@@ -145,66 +144,34 @@ export const PostForm = ({ userRequest, showPlaceholder }: { userRequest: string
     });
   };
 
-  async function fetchData(userRequestTitle: string) {
+  const fetchData = async (userRequestTitle: string) => {
     try {
-      // 1. Generate the SEO Title
-      const titleRes = await fetch('/api/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'title', content: userRequestTitle }),
-      });
+      const response =
+        await fetch(`/api/generate`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'getPost', content: userRequestTitle }),
+        });
 
-      if (!titleRes.ok) {
-        throw new Error(`HTTP error! status: ${titleRes.status}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const titleData = await titleRes.json();
-      const generatedTitle = titleData.title;
+      const responseData = await response.json();
 
+      const parsedData = JSON.parse(responseData);
 
-      // 2. Generate Meta Description using the generated title
-      const metaDescRes = await fetch('/api/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'metaDescription', content: generatedTitle }),
-      });
+      console.log("Parsed Data:", parsedData);
+      console.log("Response Data:", responseData);
 
-      const metaDescription = await metaDescRes.json();
-
-      // 3. Generate Meta Tags
-      const metaTagsRes = await fetch('/api/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'metaTags', content: generatedTitle }),
-      });
-      const metaTags = await metaTagsRes.json();
-
-      // 4. Generate Media URL
-      // const mediaRes = await fetch('/api/generate', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ action: 'media', content: generatedTitle }),
-      // });
-      // const media = await mediaRes.json();
-
-      // 5. Generate Full Blog Content
-      const contentRes = await fetch('/api/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'content', content: generatedTitle }),
-      });
-      const content = await contentRes.json();
-
-      // 6. Return combined result
-      console.log('Generated title:', titleData.title);
-      console.log('Generated metaDescription:', metaDescription.metaDescription);
-      console.log('Generated metaTags:', metaTags.metaTags);
-      console.log('Generated content:', content);
+      setShowForm(true);
+      showPlaceholder(false);
+      setPostData(parsedData);
     } catch (error) {
-      console.error('Error generating blog content:', error);
-      throw error;
+      console.error("Error posting data:", error);
+      throw error; // Rethrow the error for the calling function to handle
     }
-  }
+  };
 
 
 
@@ -305,6 +272,7 @@ export const PostForm = ({ userRequest, showPlaceholder }: { userRequest: string
             onChange={handleFileChange}
             accept="image/*"
             name="image"
+            ref={fileInputRef}
             defaultValue={state.image}
             id="image"
             className="input-text block w-full mt-2 rounded-md border-0  h-11 px-4 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
