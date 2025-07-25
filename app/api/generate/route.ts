@@ -1,6 +1,8 @@
 import { chatSession } from "@/app/prompts/generative";
 import { NextResponse, NextRequest } from "next/server";
 
+export const maxDuration = 20;
+
 export async function POST(req: NextRequest) {
   const body = await req.json();
   const action = body.action;
