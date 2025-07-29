@@ -10,7 +10,6 @@ import { z } from "zod";
 import { createPitch } from "../lib/actions";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { title } from "process";
 
 type TypeTextOptions = {
   ref?: React.RefObject<HTMLInputElement | HTMLTextAreaElement>;
@@ -19,7 +18,14 @@ type TypeTextOptions = {
 };
 
 
-export const PostForm = ({ userRequest, showPlaceholder }: { userRequest: string }) => {
+type PostFormProps = {
+  userRequest: string,
+  showPlaceholder: (value: boolean) => void;
+  showLoading: (value: boolean) => void;
+}
+
+
+export const PostForm = ({ userRequest, showPlaceholder, showLoading }: PostFormProps) => {
   const [pitch, setPitch] = useState("");
   const [postData, setPostData] = useState<any>({});
 
@@ -102,9 +108,9 @@ export const PostForm = ({ userRequest, showPlaceholder }: { userRequest: string
       if (titleRef.current && descriptionRef.current && taglineRef.current) {
 
         (async () => {
-          await typeText(title, { ref: titleRef, speed: 1200 });
-          await typeText(description, { ref: descriptionRef, speed: 1000 });
-          await typeText(tags, { ref: taglineRef, speed: 800 });
+          await typeText(title, { ref: titleRef, speed: 1600 });
+          await typeText(description, { ref: descriptionRef, speed: 1200 });
+          await typeText(tags, { ref: taglineRef, speed: 10 });
           await typeText(content, { setState: setPitch, speed: 4000 });
         })();
       }
@@ -146,6 +152,8 @@ export const PostForm = ({ userRequest, showPlaceholder }: { userRequest: string
 
   const fetchData = async (userRequestTitle: string) => {
     try {
+      showPlaceholder(false);
+      showLoading(true);
       const response =
         await fetch(`/api/generate`, {
           method: 'POST',
@@ -158,21 +166,16 @@ export const PostForm = ({ userRequest, showPlaceholder }: { userRequest: string
       }
 
       const responseData = await response.json();
-
       const parsedData = JSON.parse(responseData);
 
-      console.log("Parsed Data:", parsedData);
-      console.log("Response Data:", responseData);
-
+      showLoading(false);
       setShowForm(true);
-      showPlaceholder(false);
       setPostData(parsedData);
     } catch (error) {
       console.error("Error posting data:", error);
       throw error; // Rethrow the error for the calling function to handle
     }
   };
-
 
 
   const [state, formAction, isPending] = useActionState(handleFormSubmit, {

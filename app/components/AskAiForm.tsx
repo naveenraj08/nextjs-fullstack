@@ -3,11 +3,13 @@
 import { PlaceholdersAndVanishInput } from "@/components/ui/placeholders-and-vanish-input";
 import { PostForm } from "./PostForm";
 import { useState } from "react";
+import { ShimmeringText } from "@/components/animate-ui/text/shimmering";
 
 export function AskAiForm() {
 
   const [userInput, setUserInput] = useState<string>("");
   const [isPlaceholder, setIsPlaceholder] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const placeholders = [
     "Ask me anything, literally anything...",
@@ -30,11 +32,15 @@ export function AskAiForm() {
   const updatePlaceholder = (value: boolean) => {
     setIsPlaceholder(value);
   }
+  const updateLoading = (value: boolean) => {
+    setIsLoading(value);
+  }
 
   return (
     <>
       {
         isPlaceholder &&
+
         <PlaceholdersAndVanishInput
           placeholders={placeholders}
           onChange={handleChange}
@@ -42,7 +48,17 @@ export function AskAiForm() {
         />
       }
 
-      <PostForm showPlaceholder={updatePlaceholder} userRequest={userInput} />
+      {
+        isLoading &&
+        <ShimmeringText
+          className="opacity-70 select-none font-semibold"
+          text="Our agent is crafting the best content for you..."
+          shimmeringColor=""
+          wave
+        />
+      }
+
+      <PostForm showPlaceholder={updatePlaceholder} showLoading={updateLoading} userRequest={userInput} />
     </>
   );
 }
