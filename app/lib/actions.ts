@@ -64,7 +64,14 @@ export const createPitch = async (
       title,
       description: formData.description,
       category: formData.category,
-      image: uploadedImage.url,
+      // image: uploadedImage.url,
+      poster: {
+        _type: 'image',
+        asset: {
+          _type: 'reference',
+          _ref: uploadedImage._id,
+        },
+      },
       slug: {
         _type: "slug",
         current: shortenedSlug,
