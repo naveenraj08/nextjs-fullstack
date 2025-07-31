@@ -1,14 +1,26 @@
-## Sanity CMS + Next JS 15.2 + Shadcn/ui TailwindCSS
+# 📝 Next.js 15.2 + Sanity CMS + Gemini 2.5
 
-A beginner blog app to explore next.js concepts, with CRUD operations.
+A modern **AI-powered blog application** built with **Next.js 15.2**, **Sanity CMS**, **TailwindCSS**, and **shadcn/ui**.  
+Includes **OAuth authentication**, and **AI-generated blog content** using **Google Gemini 2.5 Flash**.
 
-### Features of the application
+## 🚀 Tech Stack
 
-- OAuth Authentication
-- Search Posts
-- User Profile Management
-- Responsive Design
+**Frontend:**  
+`HTML5` • `JavaScript` • `TypeScript` • `React.js` • `Next.js` • `shadcn/ui` • `TailwindCSS`
 
-### Future Implementation
+**CMS:**
+`Sanity CMS`
 
-- User Comments
+**API:**  
+`Sanity GROQ`
+
+**Other Tools:**  
+`Git` • `GitHub` • `VS Code` • `Vercel` • `Sentry`
+
+## ✨ Features
+
+- 🔑 **OAuth Authentication** – Secure sign-in with Google, GitHub, etc.
+- 🤖 **AI-Powered Blog Creation** – Generate blog drafts using **Gemini 2.5 Flash**
+- 🔍 **Search Posts** – Real-time filtering of blog posts
+- 👤 **User Profile Management** – Edit and manage profiles
+- 📱 **Responsive Design** – Works across mobile, tablet, and desktop
