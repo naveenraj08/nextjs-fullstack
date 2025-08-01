@@ -15,6 +15,7 @@ export default async function Home({
   const { data: initialPosts } = await sanityFetch({
     query: STARTUP_QUERY,
     params,
+    config: { next: { revalidate: 10 } }
   });
   return (
     <>
