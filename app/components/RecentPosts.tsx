@@ -13,7 +13,7 @@ interface Post {
 }
 
 export const RecentPosts = ({ post }: { post: Post }) => {
-  const { title, image, _createdAt, slug } = post;
+  const { title, poster, _createdAt, slug } = post;
   return (
     <li>
       <Link
@@ -22,7 +22,7 @@ export const RecentPosts = ({ post }: { post: Post }) => {
       >
         <span>
           <Image
-            src={image ? image : "/post-placeholder.png"}
+            src={poster?.asset?.url ? poster?.asset?.url : "/post-placeholder.png"}
             alt={title}
             className="w-12 h-12 rounded-md max-w-[48px] max-h-[48px] object-cover object-center"
             width="40"

@@ -33,7 +33,7 @@ export async function generateMetadata({
       description: post?.description?.substring(0, 150),
       images: [
         {
-          url: post?.image, // Sanity image URL
+          url: post?.poster?.asset?.url, // Sanity image URL
           width: 1200,
           height: 630,
           alt: post?.title,
@@ -53,7 +53,7 @@ const Page = async ({ params }: { params: { slug: string } }) => {
   return (
     <section className="bg-white border border-gray-100 dark:bg-gray-900 rounded-t-lg rounded-b-lg overflow-hidden">
       <Image
-        src={post?.image ? post.image : "/post-placeholder.png"}
+        src={post?.poster?.asset?.url ? post?.poster?.asset?.url : "/post-placeholder.png"}
         alt={post?.title}
         className="w-full h-[370px] object-cover"
         width="1200"
