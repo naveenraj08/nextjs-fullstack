@@ -8,7 +8,7 @@ Includes **OAuth authentication**, and **AI-generated blog content** using **Goo
 **Frontend:**  
 `HTML5` • `JavaScript` • `TypeScript` • `React.js` • `Next.js` • `shadcn/ui` • `TailwindCSS`
 
-**CMS:**
+**Headless CMS:**  
 `Sanity CMS`
 
 **API:**  
