@@ -15,7 +15,11 @@ export const STARTUP_QUERY = defineQuery(`
     views,
     description,
     category,
-    image
+    poster{
+        asset->{
+            url
+        }
+    },
     }
 `);
 
@@ -36,7 +40,11 @@ export const STARTUP_QUERY_BY_SLUG = defineQuery(
         views,
         description,
         category,
-        image,
+        poster{
+            asset->{
+                url
+            }
+        },
         pitch
     }
     `
@@ -95,7 +103,11 @@ export const GET_AUTHOR_POSTS = defineQuery(
         views,
         description,
         category,
-        image,
+        poster{
+            asset->{
+                url
+            }
+        },
         pitch
     }
     `
@@ -106,7 +118,11 @@ export const GET_RECENT_POST = defineQuery(
     *[_type == "startup" && _createdAt >= $fromTimeStamp] {
         _id,
         title,
-        image,
+        poster{
+            asset->{
+                url
+            }
+        },
         _createdAt,
         author,
         slug
