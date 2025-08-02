@@ -9,5 +9,7 @@ export const { sanityFetch, SanityLive } = defineLive({
     // Live content is currently only available on the experimental API
     // https://www.sanity.io/docs/api-versioning
     apiVersion: 'vX' 
-  }) 
+  }),
+  // Disable live in production so ISR works
+  enabled: process.env.NODE_ENV === 'development',
 });
