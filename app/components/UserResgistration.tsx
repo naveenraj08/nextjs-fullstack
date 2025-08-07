@@ -43,7 +43,7 @@ const UserResgistration = () => {
                                 </div>
 
                                 <div>
-                                    <button type="submit" className="flex w-full justify-center rounded-md bg-[#EA4335] px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-[#ea44358e] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#EA4335]">Sign in</button>
+                                    <button type="submit" className="flex w-full justify-center rounded-md bg-[#EA4335] px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-xs hover:bg-[#ea44358e] focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#EA4335]">Sign in</button>
                                 </div>
                             </form>
                         </div>
@@ -67,7 +67,7 @@ const UserResgistration = () => {
                                 >
                                     <button
                                         type="submit"
-                                        className="relative rounded-full p-2 inline-flex justify-start items-center text-sm gap-2 text-gray-600 focus:outline-none hover:bg-gray-100 focus:bg-gray-100 focus:ring-2 focus:ring-gray-400"
+                                        className="relative rounded-full p-2 inline-flex justify-start items-center text-sm gap-2 text-gray-600 focus:outline-hidden hover:bg-gray-100 focus:bg-gray-100 focus:ring-2 focus:ring-gray-400"
                                         title="Login with Github"
                                     >
                                         <svg
@@ -98,7 +98,7 @@ const UserResgistration = () => {
                                 >
                                     <button
                                         type="submit"
-                                        className="relative rounded-full p-2 inline-flex justify-start items-center text-sm gap-2 text-gray-600 focus:outline-none hover:bg-gray-100 focus:bg-gray-100 focus:ring-2 focus:ring-gray-400"
+                                        className="relative rounded-full p-2 inline-flex justify-start items-center text-sm gap-2 text-gray-600 focus:outline-hidden hover:bg-gray-100 focus:bg-gray-100 focus:ring-2 focus:ring-gray-400"
                                         title="Login with Google"
                                     >
                                         <svg

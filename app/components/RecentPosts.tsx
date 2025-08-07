@@ -38,7 +38,7 @@ export const RecentPosts = ({ post }: { post: Post }) => {
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="size-4 relative bottom-[1px]"
+              className="size-4 relative bottom-px"
             >
               <path
                 strokeLinecap="round"

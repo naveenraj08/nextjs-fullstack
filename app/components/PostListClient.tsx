@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Post, StartupTypeCard } from "./Post";
+import { Button } from "@/components/ui/button";
 
 const PAGE_SIZE = 6;
 
@@ -53,11 +54,11 @@ export function PostListClient({
 
             {hasMore && (
                 <div className="mt-20">
-                    <button
+                    <Button
                         onClick={loadMore}
                         type="button"
                         disabled={loading}
-                        className="relative rounded-lg bg-black text-white h-11 px-10 py-2 text-sm font-medium focus:ring-2 focus:ring-offset-2 focus:ring-black"
+                        className="relative rounded-lg bg-white cursor-pointer h-11 px-10 py-2 text-sm font-semibold"
                     >
                         <span
                             className={`inline-flex items-center transition duration-200 ${loading ? "opacity-0" : "opacity-100"}`}
@@ -67,9 +68,9 @@ export function PostListClient({
                         <span
                             className={`absolute flex justify-center items-center top-0 left-0 w-full h-full transition duration-200 ${loading ? "opacity-100 z-10" : "opacity-0 -z-10"}`}
                         >
-                            <span className="w-6 h-6 inline-block border-2 border-white border-r-transparent rounded-full animate-spin"></span>
+                            <span className="w-6 h-6 inline-block border-2 border-black border-r-transparent rounded-full animate-spin"></span>
                         </span>
-                    </button>
+                    </Button>
                 </div>
             )}
         </>

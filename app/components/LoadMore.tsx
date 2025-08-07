@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import React, { useState } from "react";
 
 export const LoadMore = () => {
@@ -9,7 +10,7 @@ export const LoadMore = () => {
   };
   return (
     <div>
-      <button
+      <Button
         type="button"
         disabled={isPending}
         onClick={handleLoadMore}
@@ -18,14 +19,14 @@ export const LoadMore = () => {
         <span
           className={`inline-flex items-center transition duration-200 ${isPending ? "opacity-0" : "opacity-100"}`}
         >
-          Load More
+          Load More ewfqe
         </span>
         <span
           className={`absolute flex justify-center items-center top-0 bg-[#EA4335] left-0 w-full h-full transition duration-200 ${isPending ? "opacity-100 z-10" : "opacity-0 -z-10"}`}
         >
           <span className="w-6 h-6 inline-block border-2 border-white border-r-transparent rounded-full animate-spin"></span>
         </span>
-      </button>
+      </Button>
     </div>
   );
 };
