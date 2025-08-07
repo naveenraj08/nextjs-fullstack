@@ -4,19 +4,19 @@ import { PlaceholdersAndVanishInput } from "@/components/ui/placeholders-and-van
 import { PostForm } from "./PostForm";
 import { useState } from "react";
 import { ShimmeringText } from "@/components/animate-ui/text/shimmering";
+import { validateUserKeyword } from "../lib/validation";
 
 export function AskAiForm() {
 
   const [userInput, setUserInput] = useState<string>("");
   const [isPlaceholder, setIsPlaceholder] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
 
   const placeholders = [
-    "Ask me anything, literally anything...",
-    "What’s the best movie twist you’ve seen?",
-    "Tell me something weird you just learned!",
-    "How does AI actually work? 🤖",
-    "What's on your mind right now?",
+    "✏️ Enter a keyword or topic to generate your blog post",
+    "📝 Start with a keyword — we’ll craft the post",
+    "💡 Type a keyword to spark your next blog post"
   ];
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // console.log(e.target.value);
@@ -25,8 +25,14 @@ export function AskAiForm() {
     e.preventDefault();
     const input = (e.currentTarget.elements[0] as HTMLInputElement)?.value;
     if (input) {
-      setUserInput(input.trim())
+      const result = validateUserKeyword.safeParse(input); // sync
+      if (result.success) {
+        console.log(input);
+      } else {
+        setError("Must start with a letter and contain only letters or numbers");
+      }
     }
+    // setUserInput(input.trim())
   };
 
   const updatePlaceholder = (value: boolean) => {
@@ -38,6 +44,7 @@ export function AskAiForm() {
 
   return (
     <>
+      <div className="w-full">
       {
         isPlaceholder &&
 
@@ -48,6 +55,12 @@ export function AskAiForm() {
         />
       }
 
+        {
+          error && (
+            <span className="text-red-500 font-medium text-sm mt-2 block mx-auto">{error}</span>
+          )
+        }
+
       {
         isLoading &&
         <ShimmeringText
@@ -56,9 +69,10 @@ export function AskAiForm() {
           shimmeringColor=""
           wave
         />
-      }
+        }
+      </div>
 
-      <PostForm showPlaceholder={updatePlaceholder} showLoading={updateLoading} userRequest={userInput} />
+      {/* <PostForm showPlaceholder={updatePlaceholder} showLoading={updateLoading} userRequest={userInput} /> */}
     </>
   );
 }

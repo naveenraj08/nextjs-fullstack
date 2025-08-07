@@ -14,3 +14,8 @@ export const formSchema = z.object({
     ),
   pitch: z.string().min(10, "Pitch must have at least 10 characters"),
 });
+
+
+export const validateUserKeyword = z.string().regex(/^[A-Za-z][A-Za-z0-9 ]*$/, {
+  message: "Must start with a letter and contain only letters, numbers, or spaces",
+});
