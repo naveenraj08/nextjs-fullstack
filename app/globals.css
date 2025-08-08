@@ -105,3 +105,23 @@
 .w-md-editor .w-md-editor-toolbar li > button svg {
   @apply w-5 h-5;
 }
+
+.x-divide {
+  position: relative;
+
+  &::before {
+    content: "";
+    width: 100%;
+    height: 0.5px;
+    margin: 0 20px;
+    background-color: var(--color-black);
+  }
+
+  &::after {
+    content: "";
+    width: 100%;
+    height: 0.5px;
+    margin: 0 20px;
+    background-color: var(--color-black);
+  }
+}
