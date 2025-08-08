@@ -27,12 +27,12 @@ export function AskAiForm() {
     if (input) {
       const result = validateUserKeyword.safeParse(input); // sync
       if (result.success) {
-        console.log(input);
+        setError("");
+        setUserInput(input.trim());
       } else {
         setError("Must start with a letter and contain only letters or numbers");
       }
     }
-    // setUserInput(input.trim())
   };
 
   const updatePlaceholder = (value: boolean) => {
@@ -48,7 +48,7 @@ export function AskAiForm() {
       {
         isPlaceholder &&
 
-        <PlaceholdersAndVanishInput
+          <PlaceholdersAndVanishInput
           placeholders={placeholders}
           onChange={handleChange}
           onSubmit={onSubmit}
@@ -57,22 +57,23 @@ export function AskAiForm() {
 
         {
           error && (
-            <span className="text-red-500 font-medium text-sm mt-2 block mx-auto">{error}</span>
+            <span className="text-red-500 text-center text-[13px] mt-2 block mx-auto">{error}</span>
           )
         }
 
       {
-        isLoading &&
-        <ShimmeringText
-          className="opacity-70 select-none font-semibold"
-          text="Our agent is crafting the best content for you..."
-          shimmeringColor=""
-          wave
-        />
+          isLoading &&
+          <div className="px-5 w-max mx-auto py-2">
+              <ShimmeringText
+                className="opacity-70 select-none font-medium text-black text-center"
+                text="Our agent is crafting the best content for you..."
+                shimmeringColor=""
+                wave
+              />
+            </div>
         }
       </div>
-
-      {/* <PostForm showPlaceholder={updatePlaceholder} showLoading={updateLoading} userRequest={userInput} /> */}
+      <PostForm showPlaceholder={updatePlaceholder} showLoading={updateLoading} userRequest={userInput} />
     </>
   );
 }

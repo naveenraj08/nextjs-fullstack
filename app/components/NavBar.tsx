@@ -45,7 +45,7 @@ export const NavBar = async () => {
               </DisclosureButton>
               <div className="mt-10 space-y-3 sm:mt-0 sm:space-y-0">
                 <Link href="/startup/create">
-                  <Button className=" text-white cursor-pointer font-semibold">
+                  <Button className="text-white text-[13px] font-medium cursor-pointer">
                     Create Post
                   </Button>
                 </Link>
