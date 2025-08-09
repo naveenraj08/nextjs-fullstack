@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css";
 import "easymde/dist/easymde.min.css";
+import { AnalyticsScript } from "./components/AnalyticsScript";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,6 +33,7 @@ export default function RootLayout({
       >
         {children}
         <Analytics />
+        <AnalyticsScript />
       </body>
     </html>
   );
