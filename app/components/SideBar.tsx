@@ -23,7 +23,7 @@ const SideBar = async () => {
     <>
       {posts.length > 0 ? (
         <>
-          <div className="text-lg text-blue-600 font-semibold p-5 pb-0">
+          <div className="text-lg text-[#EA4335] font-semibold p-5 pb-0">
             Recent Posts
           </div>
           <ul className="block p-2">

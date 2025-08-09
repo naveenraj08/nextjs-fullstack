@@ -16,8 +16,9 @@ export async function POST(req: NextRequest) {
     case 'getPost': {
       const result = await chatSession.sendMessage(
         `
-        You are a professional blog content generator.
-        Your task is to generate a full SEO-optimized blog post based on the given topic, keyword, or content snippet. Your response must return a VALID JSON object and nothing else.
+        You are a professional blog content generator.  
+        Your task is to generate a fully SEO-optimized blog post based on the given topic, keyword, or content snippet.  
+        Your response must return a VALID JSON object without any syntax errors, and nothing else should be included in the output.
 
         Format:
         {
@@ -48,8 +49,7 @@ export async function POST(req: NextRequest) {
           - Conclusion with a CTA
 
         Important:
-        ⚠️ Do not include any explanation, notes, or non-JSON text. Return valid JSON ONLY.
-
+        ⚠️ Do not include any explanation, notes, or non-JSON text. Return valid JSON ONLY with any syntax error.
         `
       );
 

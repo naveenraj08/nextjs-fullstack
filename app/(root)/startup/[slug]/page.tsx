@@ -55,7 +55,7 @@ const Page = async ({ params }: { params: { slug: string } }) => {
       <Image
         src={post?.poster?.asset?.url ? post?.poster?.asset?.url : "/post-placeholder.png"}
         alt={post?.title}
-        className="w-full aspect-ratio-[21/9] object-cover"
+        className="w-full aspect-ratio-[21/9] h-[340px] object-cover"
         width="1200"
         height="370"
       />
