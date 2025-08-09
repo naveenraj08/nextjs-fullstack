@@ -17,10 +17,16 @@ export default async function Home({
   const { data: initialPosts } = await sanityFetch({
     query: STARTUP_QUERY,
     params,
-    config: { next: { revalidate: 10 } },
+    cache: 'no-store', // bypass Next.js cache completely
+    config: {
+      next: { revalidate: 10 },
+      fetchOptions: {
+        cache: 'no-store', // disable fetch cache
+      },
+      perspective: 'published', // ensure only published docs are fetched
+      useCdn: false, // IMPORTANT: fetch directly from Sanity API, not CDN
+    },
   });
-
-  console.log("Initial Posts:", initialPosts);
 
   return (
     <>
