@@ -1,3 +1,5 @@
+export const revalidate = 10; // enables ISR for this page
+
 import Link from "next/link";
 import { SearchForm } from "@/app/components/SearchForm";
 import { STARTUP_QUERY } from "@/sanity/lib/queries";
@@ -17,6 +19,9 @@ export default async function Home({
     params,
     config: { next: { revalidate: 10 } },
   });
+
+  console.log("Initial Posts:", initialPosts);
+
   return (
     <>
       <div className="divide-y divide-gray-100">
