@@ -15,6 +15,6 @@ export async function GET(req: NextRequest) {
         end: page * PAGE_SIZE,
     };
 
-    const { data } = await sanityFetch({ query: STARTUP_QUERY, params });
+    const { data } = await sanityFetch({ query: STARTUP_QUERY, params, config: { cache: "no-store" } });
     return NextResponse.json(data);
 }
