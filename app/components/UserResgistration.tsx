@@ -16,6 +16,38 @@ import { githubSignIn, googleSignIn } from "../auth/actions";
 const UserResgistration = () => {
 
     const [isShowPassword, setIsShowPassword] = useState<Boolean>(false);
+    const [error, setError] = useState<string>("");
+
+
+    const createUser = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        const formData = new FormData(e.currentTarget);
+
+        const userData = {
+            name: formData.get('username'),
+            email: formData.get('email'),
+            password: formData.get('password')
+        }
+        try {
+            const res = await fetch("/api/auth/register", {
+                method: "POST",
+                body: JSON.stringify(userData),
+                headers: { "Content-Type": "application/json" }
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+                console.log(data.message);
+
+            } else {
+                setError(data.message);
+            }
+        } catch (err) {
+            setError(err instanceof Error ? err.message : "Something went wrong");
+        }
+    }
 
     return (
         <Card className="w-full mx-auto bg-white max-w-sm">
@@ -91,13 +123,24 @@ const UserResgistration = () => {
                 <p className="text-sm flex whitespace-nowrap items-center x-divide">
                     or sign in with email
                 </p>
-                <form className="mt-10">
+                <form className="mt-10" onSubmit={createUser}>
                     <div className="flex flex-col gap-6">
+                        <div className="grid gap-2">
+                            <Input
+                                id="username"
+                                type="text"
+                                className="py-2.5 h-max"
+                                name="username"
+                                placeholder="Username"
+                                required
+                            />
+                        </div>
                         <div className="grid gap-2">
                             <Input
                                 id="email"
                                 type="email"
                                 className="py-2.5 h-max"
+                                name="email"
                                 placeholder="m@example.com"
                                 required
                             />
@@ -105,6 +148,7 @@ const UserResgistration = () => {
                         <div className="grid gap-2 relative">
                             <Input
                                 id="password"
+                                name="password"
                                 className="py-2.5 h-max pr-14"
                                 type={isShowPassword ? "text" : "password"}
                                 placeholder="Password"
@@ -154,13 +198,14 @@ const UserResgistration = () => {
                             </button>
                         </div>
                     </div>
+
+                    <div className="mt-5">
+                        <Button type="submit" className="w-full font-semibold cursor-pointer">
+                            Login
+                        </Button>
+                    </div>
                 </form>
             </CardContent>
-            <CardFooter className="flex-col gap-2">
-                <Button type="submit" className="w-full font-semibold cursor-pointer">
-                    Login
-                </Button>
-            </CardFooter>
         </Card>
     );
 };
