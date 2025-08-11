@@ -76,7 +76,14 @@ export const AUTHOR_BY_GITHUB_ID = defineQuery(
 export const AUTHOR_BY_EMAIL = defineQuery(
     `
         *[_type == "author" && email == $email]{
+            _id,
+            id,
+            name,
+            username,
             email,
+            password,
+            image,
+            bio
         }
     `
 );
