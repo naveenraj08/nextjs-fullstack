@@ -1,5 +1,8 @@
-"use client";
+'use client';
 
+import React, { useState } from 'react'
+
+import { signIn } from "next-auth/react"
 import { Button } from "@/components/ui/button";
 import {
     Card,
@@ -10,59 +13,59 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import React, { useState } from "react";
-import { githubSignIn, googleSignIn } from "../auth/actions";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import Link from 'next/link';
+import { emailSignIn, githubSignIn, googleSignIn } from '@/app/auth/actions';
 
-const UserResgistration = () => {
+export const LoginForm = () => {
 
-    const router = useRouter();
-
-    const [isShowPassword, setIsShowPassword] = useState<Boolean>(false);
+    const [isShowPassword, setIsShowPassword] = React.useState<Boolean>(false);
     const [error, setError] = useState<string>("");
-    const [loading, setLoading] = useState<boolean>(false);
+    const [loading, setLoading] = useState<Boolean>(false);
 
-    const createUser = async (e: React.FormEvent<HTMLFormElement>) => {
+    // const authroizeUser = async (e: React.FormEvent<HTMLFormElement>) => {
+    //     e.preventDefault();
+    //     setLoading(true);
+
+    //     const formData = new FormData(e.currentTarget);
+
+    //     const userData = {
+    //         email: formData.get("email"),
+    //         password: formData.get("password"),
+    //     }
+
+    //     if (!res?.error) {
+    //         console.log("Login successful");
+    //         setLoading(false);
+    //     }
+
+    //     setError(res?.error || "Something went wrong");
+    //     setLoading(false);
+        
+    // }
+
+
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        setLoading(true);
-
         const formData = new FormData(e.currentTarget);
+        const email = formData.get("email") as string;
+        const password = formData.get("password") as string;
 
-        const userData = {
-            name: formData.get('username'),
-            email: formData.get('email'),
-            password: formData.get('password')
-        }
-        try {
-            const res = await fetch("/api/auth/register", {
-                method: "POST",
-                body: JSON.stringify(userData),
-                headers: { "Content-Type": "application/json" }
-            });
+        const result = await signIn("credentials", {
+            email,
+            password,
+            redirect: true,
+            redirectTo: "/startup/create",
+        });
 
-            const data = await res.json();
-
-            if (res.ok) {
-                console.log(data.message);
-                setLoading(false);
-                router.push("/user/login");
-            } else {
-                setError(data.message);
-                setLoading(false);
-
-            }
-        } catch (err) {
-            setError(err instanceof Error ? err.message : "Something went wrong");
-            setLoading(false);
-        }
-    }
+        console.log("SignIn Result:", result);
+    };
 
     return (
         <Card className="w-full mx-auto bg-white max-w-sm">
             <CardHeader>
-                <CardTitle>Create Your Post</CardTitle>
+                <CardTitle>Login</CardTitle>
                 <CardDescription>You need to sign in to continue.</CardDescription>
             </CardHeader>
             <CardContent>
@@ -130,10 +133,12 @@ const UserResgistration = () => {
                         </Button>
                     </form>
                 </div>
+
                 <p className="text-sm flex whitespace-nowrap items-center x-divide">
-                    or sign in with email
+                    or login with email
                 </p>
-                <form className="mt-8" onSubmit={createUser}>
+
+                <form className="mt-8" onSubmit={handleSubmit}>
                     {
                         error && (
                             <div className="text-red-500 text-[13px] mb-3">
@@ -142,16 +147,6 @@ const UserResgistration = () => {
                         )
                     }
                     <div className="flex flex-col gap-3">
-                        <div className="grid gap-2">
-                            <Input
-                                id="username"
-                                type="text"
-                                className="py-2.5 h-12"
-                                name="username"
-                                placeholder="Username"
-                                required
-                            />
-                        </div>
                         <div className="grid gap-2">
                             <Input
                                 id="email"
@@ -213,7 +208,7 @@ const UserResgistration = () => {
                                     </svg>
                                 )}
                             </button>
-                        </div>  
+                        </div>
                     </div>
 
                     <div className="mt-6">
@@ -237,14 +232,12 @@ const UserResgistration = () => {
                 </form>
 
                 <div className="mt-5 text-center text-[13px]">
-                    Already have an account?{" "}
-                    <Link href="/user/login" className="bg-transparent border-0 ring-0 cursor-pointer font-medium underline lg:no-underline hover:underline">
-                        Login
+                    Don't have an account?{" "}
+                    <Link href="/user/register" className="bg-transparent border-0 ring-0 cursor-pointer font-medium underline lg:no-underline hover:underline">
+                        Create
                     </Link>
                 </div>
             </CardContent>
         </Card>
-    );
-};
-
-export default UserResgistration;
+    )
+}

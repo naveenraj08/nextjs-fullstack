@@ -4,7 +4,6 @@ import { client } from "@/sanity/lib/client";
 import { AUTHOR_BY_EMAIL } from "@/sanity/lib/queries";
 import { writeClient } from "@/sanity/lib/write-client";
 
-
 export async function POST(req: NextRequest) {
     try {
         const userData = await req.json();
@@ -23,7 +22,7 @@ export async function POST(req: NextRequest) {
             });
             return NextResponse.json({ message: "Success" }, { status: 200 });
         }
-        return NextResponse.json({ message: "User already exists" }, { status: 409 });
+        return NextResponse.json({ message: "Email is already register with us try with new email" }, { status: 409 });
     }
     catch (err) {
         return NextResponse.json({ error: "Something went wrong.." }, { status: 400 })

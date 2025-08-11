@@ -4,6 +4,7 @@ import React from "react";
 import { Metadata } from "next";
 import UserResgistration from "@/app/components/UserResgistration";
 import { AskAiForm } from "@/app/components/AskAiForm";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Create a New Post",
@@ -26,14 +27,16 @@ export const metadata: Metadata = {
 const page = async () => {
   const session = await auth();
 
+  console.log("Session data:", session);
+
   if (!session) {
-    return <UserResgistration />;
+    redirect("/user/login");
   }
 
   return (
     <div className="space-y-10 min-h-[calc(100vh-110px)] flex flex-col items-center justify-center">
       <AskAiForm />
-    </div>
+    </div>  
   );
 };
 
