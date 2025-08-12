@@ -10,7 +10,7 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
   const author = await client.fetch(GET_AUTHOR_BY_ID, { id });
 
   return (
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 py-5 lg:px-8 flex flex-col-reverse lg:flex-row justify-start items-start gap-5">
+    <div className="mx-auto max-w-7xl px-4 sm:px-6 py-5 lg:px-8 flex flex-col-reverse lg:flex-row justify-start items-start gap-10">
       <main className="font-work-sans flex-1">
         <ul className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
           {posts.length > 0 ? (
@@ -24,7 +24,7 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
           )}
         </ul>
       </main>
-      <aside className="lg:max-w-[375px] w-full static xl:sticky top-5 z-10 bg-white rounded-lg overflow-hidden border border-gray-100">
+      <aside className="lg:max-w-[280px] w-full static xl:sticky top-5 z-10 bg-white rounded-lg overflow-hidden border border-gray-100">
         <UserProfile user={author} />
       </aside>
     </div>

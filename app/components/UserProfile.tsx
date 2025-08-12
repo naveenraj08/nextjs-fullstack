@@ -22,16 +22,20 @@ const UserProfile = ({ user }) => {
 
   return (
     <div className="p-5">
-      <h2 className="p-5 text-center font-semibold">Profile Overview</h2>
-      {renderProfileImage}
-      <h3 className="mt-5 font-medium text-gray-900 text-center">{name}</h3>
-      <div className="text-center block">
-        <a
-          href={`mailto:${email}`}
-          className="text-blue-500 p-2 rounded-md text-sm text-center inline-block mx-auto hover:underline"
-        >
-          {email}
-        </a>
+      <h2 className="pb-5 lg:text-center font-semibold">Profile Overview</h2>
+      <div className="flex justify-start items-center gap-5 lg:gap-0 lg:flex-col">
+        {renderProfileImage}
+        <div className="w-full">
+          <h3 className="lg:mt-5 font-medium text-gray-900 lg:text-center">{name}</h3>
+          <div className="lg:text-center block">
+            <a
+              href={`mailto:${email}`}
+              className="text-blue-500 lg:p-2 rounded-md text-sm lg:text-center inline-block mx-auto hover:underline"
+            >
+              {email}
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   );
