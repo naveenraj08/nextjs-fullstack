@@ -14,52 +14,43 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import Link from 'next/link';
-import { emailSignIn, githubSignIn, googleSignIn } from '@/app/auth/actions';
+import { githubSignIn, googleSignIn } from '@/app/auth/actions';
+import { redirect } from 'next/navigation';
 
 export const LoginForm = () => {
 
-    const [isShowPassword, setIsShowPassword] = React.useState<Boolean>(false);
+    const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
-    const [loading, setLoading] = useState<Boolean>(false);
-
-    // const authroizeUser = async (e: React.FormEvent<HTMLFormElement>) => {
-    //     e.preventDefault();
-    //     setLoading(true);
-
-    //     const formData = new FormData(e.currentTarget);
-
-    //     const userData = {
-    //         email: formData.get("email"),
-    //         password: formData.get("password"),
-    //     }
-
-    //     if (!res?.error) {
-    //         console.log("Login successful");
-    //         setLoading(false);
-    //     }
-
-    //     setError(res?.error || "Something went wrong");
-    //     setLoading(false);
-        
-    // }
-
-
+    const [loading, setLoading] = useState<boolean>(false);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        setLoading(true);
 
         const formData = new FormData(e.currentTarget);
         const email = formData.get("email") as string;
         const password = formData.get("password") as string;
 
+        if (!email || !password) {
+            setError("Email and password are required.");
+            return false;
+        }
+
         const result = await signIn("credentials", {
             email,
             password,
-            redirect: true,
-            redirectTo: "/startup/create",
+            redirect: false,
         });
 
-        console.log("SignIn Result:", result);
+        if (result?.error) {
+            setLoading(false);
+            setError("Invalid credentials. Please try again.");
+        } else {
+            setError("");
+            setLoading(false);
+            redirect("/startup/create");
+        }
     };
 
     return (
@@ -141,7 +132,7 @@ export const LoginForm = () => {
                 <form className="mt-8" onSubmit={handleSubmit}>
                     {
                         error && (
-                            <div className="text-red-500 text-[13px] mb-3">
+                            <div className="text-red-600 text-[13px] mb-2">
                                 {error}
                             </div>
                         )
@@ -151,7 +142,7 @@ export const LoginForm = () => {
                             <Input
                                 id="email"
                                 type="email"
-                                className="py-2.5 h-12"
+                                className="py-2.5 h-12 placeholder:text-[13px]"
                                 name="email"
                                 placeholder="m@example.com"
                                 required
@@ -161,7 +152,7 @@ export const LoginForm = () => {
                             <Input
                                 id="password"
                                 name="password"
-                                className="py-2.5 h-12 pr-14"
+                                className="py-2.5 h-12 pr-14 placeholder:text-[13px]"
                                 type={isShowPassword ? "text" : "password"}
                                 placeholder="Password"
                                 required
@@ -220,7 +211,7 @@ export const LoginForm = () => {
                             <span
                                 className={`inline-flex items-center transition duration-200 ${loading ? "opacity-0" : "opacity-100"}`}
                             >
-                                Register
+                                Login
                             </span>
                             <span
                                 className={`absolute flex justify-center items-center top-0 left-0 w-full h-full transition duration-200 ${loading ? "opacity-100 z-10" : "opacity-0 -z-10"}`}
@@ -234,7 +225,7 @@ export const LoginForm = () => {
                 <div className="mt-5 text-center text-[13px]">
                     Don't have an account?{" "}
                     <Link href="/user/register" className="bg-transparent border-0 ring-0 cursor-pointer font-medium underline lg:no-underline hover:underline">
-                        Create
+                        Register
                     </Link>
                 </div>
             </CardContent>
