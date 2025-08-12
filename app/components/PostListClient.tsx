@@ -21,8 +21,8 @@ export function PostListClient({
     const loadMore = async () => {
         setLoading(true);
         const res = await fetch(
-            `/api/posts?search=${query || ""}&page=${page + 1}`
-        );
+            `/api/posts?search=${query || ""}&page=${page + 1}`,
+        { cache: "no-store" });
         const newPosts = await res.json();
 
         setPosts((prev) => [...prev, ...newPosts]);
@@ -35,7 +35,7 @@ export function PostListClient({
     useEffect(() => {
         async function fetchPosts() {
             setPage(1);
-            const res = await fetch(`/api/posts?search=${query || ""}&page=1`);
+            const res = await fetch(`/api/posts?search=${query || ""}&page=1`, { cache: "no-store" });
             const newPosts = await res.json();
             setPosts(newPosts);
             setHasMore(newPosts.length >= PAGE_SIZE);
