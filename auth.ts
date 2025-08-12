@@ -48,7 +48,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             console.log("Password valid:", isPasswordValid);
             if (!isPasswordValid) {
               console.error("Invalid password for user:", email);
-              return null; // Invalid credentials
+              return "Invalid Password"; // Return null if password is invalid
             }
 
             return {
