@@ -53,7 +53,15 @@ export async function POST(req: NextRequest) {
         `
       );
 
-      return NextResponse.json(result.response.text(), { status: 200 });
+      let parsedResult;
+      try {
+        parsedResult = JSON.parse(result.response.text());
+      } catch (err) {
+        console.error("Failed to parse AI response:", err);
+        return NextResponse.json({ error: "AI returned invalid JSON" }, { status: 500 });
+      }
+    
+      return NextResponse.json(parsedResult, { status: 200 });
     }
 
     default:
