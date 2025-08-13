@@ -40,7 +40,6 @@ export const startup = defineType({
             options: {
                 hotspot: true,
             },
-            validation: (Rule) => Rule.required(),
         }),
         defineField({
             name: "pitch",
