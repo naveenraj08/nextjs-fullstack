@@ -1,5 +1,3 @@
-export const revalidate = 0; // enables ISR for this page
-
 import Link from "next/link";
 import { SearchForm } from "@/app/components/SearchForm";
 import { STARTUP_QUERY } from "@/sanity/lib/queries";
@@ -39,7 +37,7 @@ export default async function Home({
               role="alert"
             >
               <span className="text-sm font-medium">
-                Announcement goes here! 👏
+                Experimental Project 👏
               </span>
             </Link>
             <h1 className="mb-4 max-w-4xl mx-auto font-extrabold tracking-tight leading-none text-gray-900 text-5xl lg:text-7xl">
