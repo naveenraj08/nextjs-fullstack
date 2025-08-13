@@ -16,9 +16,15 @@ export async function POST(req: NextRequest) {
     case 'getPost': {
       const result = await chatSession.sendMessage(
         `
-        You are a professional blog content generator.  
-        Your task is to generate a fully SEO-optimized blog post based on the given topic, keyword, or content snippet.  
-        Your response must return a VALID JSON object without any syntax errors, and nothing else should be included in the output.
+        You are a professional blog content generator.
+        Your task is to generate a fully SEO-optimized blog post based on the given topic, keyword, or content snippet.
+
+        ⚠️ Output Rules:
+        - Output ONLY a valid JSON object — no extra text, no explanations.
+        - All double quotes inside values must be escaped as \".
+        - All new lines in content must be replaced with \n.
+        - No special characters that could break JSON.
+        - Do not use unescaped slashes or control characters.
 
         Format:
         {
