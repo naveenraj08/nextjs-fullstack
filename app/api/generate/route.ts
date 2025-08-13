@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
         - 'title' must be keyword-rich and attention-grabbing.
         - 'description' should be concise (150–160 characters) and engaging.
         - 'tags' must be a single SEO keyword within (10-20) characters.
-        - 'media.value' Attractive beautiful image URL based on the blog title. No prompts, no descriptions — only a valid image URL.
+        - 'media.value' Attractive, beautiful image URL based on the blog title. No prompts, no descriptions — only a valid image URL.
         - 'content' should be 600–1200 words in markdown format.
         - Include:
           - Introduction
