@@ -1,4 +1,4 @@
-export const revalidate = 10; // enables ISR for this page
+export const revalidate = 0; // enables ISR for this page
 
 import Link from "next/link";
 import { SearchForm } from "@/app/components/SearchForm";
