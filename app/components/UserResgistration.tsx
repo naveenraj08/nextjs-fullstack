@@ -35,7 +35,7 @@ const UserResgistration = () => {
 
         const userData = {
             name: formData.get('username'),
-            email: formData.get('email'),
+            email: formData.get('email')?.toLowerCase(),
             password: formData.get('password')
         }
 

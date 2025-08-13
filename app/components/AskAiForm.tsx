@@ -22,6 +22,7 @@ export function AskAiForm() {
     // console.log(e.target.value);
   };
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    setError("");
     e.preventDefault();
     const input = (e.currentTarget.elements[0] as HTMLInputElement)?.value;
     if (input) {

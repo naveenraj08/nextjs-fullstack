@@ -59,11 +59,14 @@ export const PostForm = ({ userRequest, showPlaceholder, showLoading }: PostForm
   };
 
   const handleFormSubmit = async (prevState: any, formData: FormData) => {
+
+    const imageFile = formData.get("image") as File | null;
+
     const formValues = {
       title: formData.get("title") as string,
       description: formData.get("description") as string,
       category: formData.get("category") as string,
-      image: formData.get("image") as File, // Use uploaded image URL,
+      image: imageFile && imageFile.size > 0 ? imageFile : null,
       pitch,
     };
 

@@ -7,13 +7,19 @@ export const formSchema = z.object({
   image: z
     .any()
     .optional()
-    .refine((file) => file.size < 2 * 1024 * 1024, "Image must be less than 2MB") // 2MB limit
     .refine(
-      (file) => ["image/jpeg", "image/png", "image/webp"].includes(file.type),
+      (file) => !file || file.size < 2 * 1024 * 1024, // only validate if file exists
+      "Image must be less than 2MB"
+    )
+    .refine(
+      (file) =>
+        !file ||
+        ["image/jpeg", "image/png", "image/webp"].includes(file.type), // only validate if file exists
       "Only JPG, PNG, and WEBP images are allowed"
     ),
   pitch: z.string().min(10, "Pitch must have at least 10 characters"),
 });
+
 
 
 export const validateUserKeyword = z.string().regex(/^[A-Za-z][A-Za-z0-9 ]*$/, {
