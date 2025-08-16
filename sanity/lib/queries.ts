@@ -131,7 +131,7 @@ export const GET_AUTHOR_POSTS = defineQuery(
 
 export const GET_RECENT_POST = defineQuery(
     `
-    *[_type == "startup" && _createdAt >= $fromTimeStamp] {
+    *[_type == "startup" && _createdAt >= $fromTimeStamp] | order(_createdAt desc) {
         _id,
         title,
         poster{
