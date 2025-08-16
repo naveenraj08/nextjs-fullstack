@@ -13,7 +13,7 @@ export const NavBar = async () => {
 
   return (
     <Disclosure as="nav" className="bg-white border-b border-gray-100 group">
-      <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-3 sm:px-6 lg:px-8">
         <div className="relative flex h-16 items-center justify-between gap-5">
           <div className="flex items-center sm:hidden">
             {/* Mobile menu button*/}
@@ -62,18 +62,30 @@ export const NavBar = async () => {
                   >
                     Home
                   </Link>
-                  <Link
-                    href="/user/login"
-                    className="block px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-                  >
-                    Login
-                  </Link>
-                  <Link
-                    href="/user/register"
-                    className="block px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-                  >
-                    Register
-                  </Link>
+
+                  {!session ? (
+                    <>
+                      <Link
+                        href="/user/login"
+                        className="block px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                      >
+                        Login
+                      </Link>
+                      <Link
+                        href="/user/register"
+                        className="block px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                      >
+                        Register
+                      </Link>
+                    </>
+                  ) : (
+                    <Link
+                      href="/user/register"
+                      className="block px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                    >
+                      Create Post
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>
