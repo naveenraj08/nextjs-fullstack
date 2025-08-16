@@ -52,7 +52,10 @@ export async function POST(req: NextRequest) {
         ⚠️ Do not include any explanation, notes, or non-JSON text. Return valid JSON ONLY.
         `
       );
-       return NextResponse.json(result.response.text(), { status: 200 });
+
+      const parsetData = JSON.parse(result.response.text())
+
+      return NextResponse.json(parsetData, { status: 200 });
     }
 
     default:

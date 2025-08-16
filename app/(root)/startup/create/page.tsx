@@ -27,8 +27,6 @@ export const metadata: Metadata = {
 const page = async () => {
   const session = await auth();
 
-  console.log("Session data:", session);
-
   if (!session) {
     redirect("/user/login");
   }
@@ -36,7 +34,7 @@ const page = async () => {
   return (
     <div className="space-y-10 min-h-[calc(100vh-110px)] flex flex-col items-center justify-center">
       <AskAiForm />
-    </div>  
+    </div>
   );
 };
 

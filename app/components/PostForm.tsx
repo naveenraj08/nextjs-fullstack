@@ -157,23 +157,20 @@ export const PostForm = ({ userRequest, showPlaceholder, showLoading }: PostForm
     try {
       showPlaceholder(false);
       showLoading(true);
-      const response =
-        await fetch(`/api/generate`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ action: 'getPost', content: userRequestTitle }),
-        });
+      const response = await fetch(`/api/generate`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "getPost", content: userRequestTitle }),
+      });
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const responseData = await response.json();
-      const parsedData = JSON.parse(responseData);
-
       showLoading(false);
       setShowForm(true);
-      setPostData(parsedData);
+      setPostData(responseData);
     } catch (error) {
       console.error("Error posting data:", error);
       throw error; // Rethrow the error for the calling function to handle
