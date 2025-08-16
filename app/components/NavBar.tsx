@@ -75,7 +75,6 @@ export const NavBar = async () => {
                     Register
                   </Link>
                 </div>
-
               </div>
             </div>
             <div className="hidden lg:block">
@@ -88,7 +87,7 @@ export const NavBar = async () => {
                 >
                   <Button
                     type="submit"
-                    className="relative rounded text-black bg-white focus:outline-hidden"
+                    className="relative cursor-pointer rounded text-black bg-white focus:outline-hidden"
                     title="Log out"
                   >
                     <span className="sr-only">Log out</span>
@@ -103,9 +102,9 @@ export const NavBar = async () => {
                       await signIn("github");
                     }}
                   >
-                      <Button 
+                    <Button
                       type="submit"
-                        className="relative rounded bg-white text-black cursor-pointer"
+                      className="relative rounded bg-white text-black cursor-pointer"
                       title="Login with Github"
                     >
                       <svg
@@ -123,7 +122,7 @@ export const NavBar = async () => {
                           ></path>
                         </g>
                       </svg>
-                      </Button>
+                    </Button>
                   </form>
 
                   <form
@@ -132,9 +131,9 @@ export const NavBar = async () => {
                       await signIn("google");
                     }}
                   >
-                      <Button 
+                    <Button
                       type="submit"
-                        className="relative rounded bg-white text-black cursor-pointer"
+                      className="relative rounded bg-white text-black cursor-pointer"
                       title="Login with Google"
                     >
                       <svg
@@ -164,7 +163,7 @@ export const NavBar = async () => {
                           <path fill="none" d="M0 0h48v48H0z"></path>
                         </g>
                       </svg>
-                      </Button>
+                    </Button>
                   </form>
                 </div>
               )}

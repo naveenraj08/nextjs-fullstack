@@ -1,15 +1,18 @@
 "use server";
 
 import { signIn } from "@/auth";
-import { redirect } from "next/dist/server/api-utils";
 
 
 export async function githubSignIn() {
-    await signIn("github");
+    await signIn("github", {
+        redirectTo: "/startup/create"
+    });
 }
 
 export async function googleSignIn() {
-    await signIn("google");
+    await signIn("google", {
+        redirectTo: "/startup/create"
+    });
 }
 
 

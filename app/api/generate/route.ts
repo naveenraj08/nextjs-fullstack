@@ -16,16 +16,10 @@ export async function POST(req: NextRequest) {
     case 'getPost': {
       const result = await chatSession.sendMessage(
         `
+
         You are a professional blog content generator.
         Your task is to generate a fully SEO-optimized blog post based on the given topic, keyword, or content snippet.
-
-        ⚠️ Output Rules:
-        - Output ONLY a valid JSON object — no extra text, no explanations.
-        - All double quotes inside values must be escaped as \".
-        - All new lines in content must be replaced with \n.
-        - No special characters that could break JSON.
-        - Do not use unescaped slashes or control characters.
-
+        Your response must return a VALID JSON object without any syntax errors, and nothing else should be included in the output.
         Format:
         {
           "title": "",
@@ -45,17 +39,17 @@ export async function POST(req: NextRequest) {
         - Only return a valid JSON object (no markdown code blocks, no commentary).
         - 'title' must be keyword-rich and attention-grabbing.
         - 'description' should be concise (150–160 characters) and engaging.
-        - 'tags' must be a single SEO keyword within (10-20) characters.
-        - 'media.value' Attractive, beautiful image URL based on the blog title. No prompts, no descriptions — only a valid image URL.
+        - 'tags' must be a single SEO keyword.
+        - 'media.value' Attractive beautiful image URL based on the blog title. No prompts, no descriptions — only a valid image URL.
         - 'content' should be 600–1200 words in markdown format.
         - Include:
           - Introduction
           - Multiple sections using ### headings
           - Practical examples
           - Conclusion with a CTA
-
+          
         Important:
-        ⚠️ Do not include any explanation, notes, or non-JSON text. Return valid JSON ONLY with any syntax error.
+        ⚠️ Do not include any explanation, notes, or non-JSON text. Return valid JSON ONLY.
         `
       );
        return NextResponse.json(result.response.text(), { status: 200 });

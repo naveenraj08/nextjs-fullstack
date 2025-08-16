@@ -57,14 +57,13 @@ export const createPitch = async (
     });
 
   const slug = slugify(title, { lower: true, strict: true });
-  const shortenedSlug = shortenSlug(slug, 50);;
+  const shortenedSlug = shortenSlug(slug, 50);
 
   try {
     const startup = {
       title,
       description: formData.description,
       category: formData.category,
-      // image: uploadedImage.url,
       poster: {
         _type: 'image',
         asset: {
@@ -82,6 +81,7 @@ export const createPitch = async (
       },
       pitch,
     };
+
     const result = await writeClient.create({ _type: "startup", ...startup });
 
     return parseServerActionResponse({
