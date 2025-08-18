@@ -82,6 +82,8 @@ export const createPitch = async (
       pitch,
     };
 
+    console.log(startup);
+
     const result = await writeClient.create({ _type: "startup", ...startup });
 
     return parseServerActionResponse({
