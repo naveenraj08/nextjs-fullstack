@@ -31,6 +31,8 @@ const page = async () => {
     redirect("/user/login");
   }
 
+  console.log(session);
+
   return (
     <div className="space-y-10 min-h-[calc(100vh-110px)] flex flex-col items-center justify-center">
       <AskAiForm />
