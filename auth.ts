@@ -1,7 +1,6 @@
 import NextAuth from "next-auth";
 import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
-import { JWT } from "next-auth/jwt";
 import { Account, Profile, Session, User } from "next-auth";
 import { client } from "./sanity/lib/client";
 import { AUTHOR_BY_EMAIL, AUTHOR_BY_GITHUB_ID } from "./sanity/lib/queries";
@@ -45,7 +44,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             const user = res[0];
             // Verify password
             const isPasswordValid = await bcrypt.compare(password, user.password);
-            console.log("Password valid:", isPasswordValid);
             if (!isPasswordValid) {
               console.error("Invalid password for user:", email);
               return null; // Invalid credentials

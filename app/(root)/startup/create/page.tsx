@@ -1,8 +1,5 @@
-import { AlertLogin } from "@/app/components/AlertLogin";
 import { auth } from "@/auth";
-import React from "react";
 import { Metadata } from "next";
-import UserResgistration from "@/app/components/UserResgistration";
 import { AskAiForm } from "@/app/components/AskAiForm";
 import { redirect } from "next/navigation";
 
@@ -30,8 +27,6 @@ const page = async () => {
   if (!session) {
     redirect("/user/login");
   }
-
-  console.log(session);
 
   return (
     <div className="space-y-10 min-h-[calc(100vh-110px)] flex flex-col items-center justify-center">

@@ -10,7 +10,7 @@ import { z } from "zod";
 import { createPitch } from "../lib/actions";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
@@ -37,7 +37,6 @@ export const PostForm = ({ userRequest, showPlaceholder, showLoading }: PostForm
   const [errors, setErrors] = useState({});
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
 
